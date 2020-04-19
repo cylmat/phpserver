@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+    ################
+    # PROXY - CACHE
+    ################
+    haproxy:
+        image: haproxy:2.2
+        restart: always
+        networks:
+            - phpext
+
+    varnish: 
+        image: varnish:6.0
+        restart: always
+        networks:
+            - phpext
+
+networks: 
+    phpext:
+      

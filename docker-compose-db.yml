@@ -1,0 +1,145 @@
+version: '3'
+
+services: 
+    #############
+    # DATABASES
+    #############
+    mysql:
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass
+            MYSQL_DATABASE: mydb
+        command: "--innodb_use_native_aio=0"
+        volumes:
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/mysql/:/etc/mysql/:ro
+            - ${WEBSERVER}/${DIRECTORY}/.docker/.data/mysql:/var/lib/mysql
+        ports:
+            - 3306:3306
+        networks: 
+            - phpext
+         # https://sp.mysqltutorial.org/wp-content/uploads/2018/03/mysqlsampledatabase.zip
+
+        ############
+        # tuner
+        # https://github.com/major/MySQLTuner-perl
+        ############
+    
+    mysql2:
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass
+            MYSQL_DATABASE: my2db
+        command: "--innodb_use_native_aio=0"
+        volumes:
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/mysql2/:/etc/mysql/:ro
+            - ${WEBSERVER}/${DIRECTORY}/.docker/.data/mysql2:/var/lib/mysql
+        ports:
+            - 3307:3306
+        networks: 
+            - phpext
+
+    mysqlr:
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass
+            MYSQL_DATABASE: myrdb
+        command: "--innodb_use_native_aio=0"
+        volumes:
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/mysqlr/:/etc/mysql/:ro
+            - ${WEBSERVER}/${DIRECTORY}/.docker/.data/mysqlr:/var/lib/mysql
+        ports:
+            - 3309:3306
+        networks: 
+            - phpext
+
+    # mysql8:
+    #     image: mysql:8.0
+    #     restart: always
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: root
+    #         MYSQL_USER: user
+    #         MYSQL_PASSWORD: pass
+    #         MYSQL_DATABASE: my8db   
+    #     ports:
+    #         - 3308:3306
+    #     command: "--innodb_use_native_aio=0"
+    #     volumes:
+    #         - ${WEBSERVER}/${DIRECTORY}/.docker/.data/mysql8:/var/lib/mysql
+    #         - ${WEBSERVER}/${DIRECTORY}/.docker/config/mysql8/:/etc/mysql/:ro
+    #     networks:
+    #         - phpext
+            
+    mariadb:
+        image: mariadb:10.0
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass
+            MYSQL_DATABASE: madb
+        ports: 
+            - 3310:3306
+        command: "--innodb_use_native_aio=0"
+        volumes:
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/maria/:/etc/mysql/
+            - ${WEBSERVER}/${DIRECTORY}/.docker/.data/maria/:/var/lib/mysql
+        networks:
+            - phpext
+
+    postgres:
+        image: postgres:12.4
+        restart: always
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: pass
+            POSTGRES_DB: pgdb
+        ports:
+            - 5432:5432
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        networks:
+            - phpext
+
+    redis:
+        image: redis:6.0  
+        restart: always
+        ports:
+            - 6379:6379
+        volumes: 
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+            - ${WEBSERVER}/${DIRECTORY}/.docker/.data/redis/:/data/
+        networks:
+            - phpext
+    
+    memcached:
+        image: memcached:1.6
+        restart: always
+        ports:
+            - 11211:11211
+        networks:
+            - phpext
+
+    #apacheignite/ignite
+
+networks: 
+    phpext:
+
+volumes:
+    pgdata:
+
+#################
+# https://min.io
+#################
+#     image: minio/minio
+#     ports:
+#         - 9999:9000
+######################

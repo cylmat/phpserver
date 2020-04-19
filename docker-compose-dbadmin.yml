@@ -1,0 +1,66 @@
+version: "3"
+
+services:
+    ###########
+    # DB ADMIN 
+    ###########
+    phpmyadmin:
+        image: phpmyadmin:5.0
+        restart: always
+        ports: 
+            - 8080:80
+        environment: 
+            - PMA_ARBITRARY=1
+        external_links:
+            - mariadb:mariadb
+            - mysql:mysql
+        networks:
+            - phpext
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8081:8080
+        networks:
+            - phpext
+
+    pgadmin:
+        image: dpage/pgadmin4:4
+        restart: always
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=user@localhost.fr
+            - PGADMIN_DEFAULT_PASSWORD=pass
+        external_links:
+            - postgres:postgres
+        ports: 
+            - 8082:80
+        networks:
+            - phpext
+
+    #######
+    # SQLITE admin: https://www.phpliteadmin.org
+    # into phpfpm container
+    #######
+
+    phpredisadmin:
+        image: erikdubbelboer/phpredisadmin
+        restart: always
+        environment:
+            - REDIS_1_HOST=redis
+            - REDIS_1_NAME=redis
+        ports: 
+            - 8083:80
+        networks:
+            - phpext
+
+    memcachedadmin:
+        image: jacksoncage/phpmemcachedadmin
+        restart: always
+        ports:
+            - 8084:80
+        networks:
+            - phpext
+
+networks: 
+    phpext:
