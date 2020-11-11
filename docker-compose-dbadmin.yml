@@ -18,7 +18,7 @@ services:
             - phpenv
 
     adminer:
-        image: adminer
+        image: adminer:4.7-standalone
         restart: always
         ports:
             - 8081:8080
@@ -43,7 +43,7 @@ services:
     #######
 
     phpredisadmin:
-        image: erikdubbelboer/phpredisadmin
+        image: erikdubbelboer/phpredisadmin:v1.13.2
         restart: always
         environment:
             - REDIS_1_HOST=redis

@@ -5,8 +5,8 @@ services:
         image: nginx:1.17
         restart: always
         volumes:
-            - ${WEBSERVER}/${DIRECTORY}/.docker/config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-            - ${WEBSERVER}/${DIRECTORY}/.docker/config/nginx/conf.d/:/etc/nginx/conf.d/:ro
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/conf.d/:/etc/nginx/conf.d/:ro
             - ${WEBSERVER}/${DIRECTORY}:/var/www/
         ports:
             - 8001:80
@@ -20,7 +20,7 @@ services:
         ports: 
             - 8002:80
         volumes:
-            - ${WEBSERVER}/${DIRECTORY}.docker/config/apache-httpd/:/usr/local/apache2/conf/:ro
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/apache-httpd/:/usr/local/apache2/conf/:ro
             - ${WEBSERVER}/${DIRECTORY}:/usr/local/apache2/htdocs/
         networks:
             - phpenv

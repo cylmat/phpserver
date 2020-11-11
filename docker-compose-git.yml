@@ -5,7 +5,7 @@ services:
     # Git #
     #######
     git:
-        image: jkarlos/git-server-docker
+        image: jkarlos/git-server-docker:latest
         restart: always
         ports:
             - '2222:22'
