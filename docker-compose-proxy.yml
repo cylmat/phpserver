@@ -7,12 +7,16 @@ services:
     haproxy:
         image: haproxy:2.2
         restart: always
+        ports:
+            - 8010:80
         networks:
             - phpenv
 
     varnish: 
         image: varnish:6.0
         restart: always
+        ports:
+            - 8011:80
         networks:
             - phpenv
 
