@@ -1,9 +1,9 @@
 version: '3'
 
 services: 
-    ######
-    # Git
-    ######
+    #######
+    # Git #
+    #######
     git:
         image: jkarlos/git-server-docker
         restart: always
@@ -15,8 +15,7 @@ services:
         expose:
             - 2222
         networks: 
-            - phpext
+            - phpenv
 
 networks: 
-    phpext:
-       
+    phpenv:
