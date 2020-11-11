@@ -1,8 +1,6 @@
 <?php
 
 Check::pdo('mysql','mysql:host=mysql;dbname=mydb');
-Check::pdo('mysql2','mysql:host=mysql2;dbname=my2db'); //second one
-Check::pdo('mysqlr','mysql:host=mysqlr;dbname=myrdb'); //replicas
 Check::pdo('maria','mysql:host=mariadb;dbname=madb');
 Check::pdo('sqlite','sqlite:/sqlite/sqlite.db3'); 
 
@@ -38,23 +36,6 @@ class Check
         }
     }
 
-    static function my8()
-    {
-        //mysql8
-        // try {
-        //     $pdo = new PDO("mysql:host=mysql8;port=3307;dbname=mydb8", $_SERVER['DB_USER'], $_SERVER['DB_PASS']);
-        //     $pdo->exec("SET CHARACTER SET utf8");
-        //     $pdo->exec("CREATE TABLE IF NOT EXISTS tests_my (id INT, my TEXT);");
-        //     $pdo->exec("TRUNCATE TABLE tests_my;");
-        //     $pdo->exec('INSERT INTO tests_my (id, my) VALUES (96, " mysql-ok ") ON DUPLICATE KEY UPDATE id=id;');
-        //     $r = $pdo->query("SELECT * FROM tests_my");
-        //     if (false === $r) throw new PDOException("Query failed");
-        //     echo $r->fetch()['my'] . PHP_EOL;
-        // } catch (PDOException $e) {
-        //     echo " MY8:".$e->getMessage().PHP_EOL;
-        // }
-    }
-
     static function pg(string $dsn)
     {
         // Postgres
@@ -88,9 +69,8 @@ class Check
     }
 
     /**
-     * CACHE
+     * CACHE K-V
      */
-
     static function dba(string $file) //berkeley
     {
         //echo (implode(' ',dba_handlers())); //=> cdb, cdb_make, db4, inifile, flatfile, qdbm, lmdb
@@ -132,22 +112,5 @@ class Check
         }
     }
 }
-
-
-/************************* lua */
-try {
-    $lua = new Lua;
-    $lua->assign("phplua_var", " lua-ok "); 
-    $lua->eval("print(phplua_var);").PHP_EOL;
-} catch(\Exception $e) {
-    echo $e->getMessage().PHP_EOL;
-}
-
-
-/********* sodium */
-
-/******** swoole */
-
-/********** zlib */
 
 echo PHP_EOL;
