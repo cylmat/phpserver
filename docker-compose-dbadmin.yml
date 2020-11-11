@@ -51,7 +51,7 @@ services:
         ports: 
             - 8083:80
         networks:
-            - phpphpenvext
+            - phpenv
 
     memcachedadmin:
         image: jacksoncage/phpmemcachedadmin

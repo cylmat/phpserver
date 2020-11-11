@@ -46,4 +46,4 @@ services:
             - phpenv
 
 networks: 
-    phpext:
+    phpenv:
