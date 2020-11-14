@@ -24,6 +24,9 @@ services:
             - ${WEBSERVER}/${DIRECTORY}:/usr/local/apache2/htdocs/
         networks:
             - phpenv
+
+    # syslog:
+    #     image: jumanjiman/rsyslog
           
 networks: 
     phpenv:
