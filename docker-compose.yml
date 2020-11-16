@@ -1,49 +1,32 @@
 version: '3'
 
 services: 
-    ###########
-    # PHP-FPM # 
-    ###########
-    phpfpm: 
-        build: .docker/df/phpfpm
+    nginx:
+        image: nginx:1.17
         restart: always
-        working_dir: /var/www
-        ports: 
-            - 9000:9000
-        environment:
-            - DB_USER=user
-            - DB_PASS=pass
         volumes:
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/conf.d/:/etc/nginx/conf.d/:ro
             - ${WEBSERVER}/${DIRECTORY}:/var/www/
-            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/phpfpm/:/etc/php/7.4/:ro
-            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/fpm/conf.d/
-            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/cli/conf.d/
-            
-            # sqlite
-            - ${WEBSERVER}/${DIRECTORY}/.docker/.data/sqlite/:/sqlite/
-        networks: 
-            - phpenv
-    
-    # SECOND FPM TO TRY LOAD-BALANCING
-    phpfpm2: 
-        build: .docker/df/phpfpm
-        restart: always
-        working_dir: /var/www
-        ports: 
-            - 9001:9000
-        environment:
-            - DB_USER=user
-            - DB_PASS=pass
-        volumes:
-            - ${WEBSERVER}/${DIRECTORY}:/var/www/
-            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/phpfpm/:/etc/php/7.4/:ro
-            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/fpm/conf.d/
-            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/cli/conf.d/
-            
-            # sqlite
-            - ${WEBSERVER}/${DIRECTORY}/.docker/.data/sqlite/:/sqlite/
+        ports:
+            - 8001:80
         networks: 
             - phpenv
 
+    # SECOND SERVER TO TRY LOAD-BALANCING
+    apache:
+        image: httpd:2.4
+        restart: always
+        ports: 
+            - 8002:80
+        volumes:
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/apache-httpd/:/usr/local/apache2/conf/:ro
+            - ${WEBSERVER}/${DIRECTORY}:/usr/local/apache2/htdocs/
+        networks:
+            - phpenv
+
+    # syslog:
+    #     image: jumanjiman/rsyslog
+          
 networks: 
     phpenv:
