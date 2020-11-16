@@ -16,9 +16,9 @@
 
 vcl 4.0;
 
-###########
-# LOADING VCL
-###########
+###############
+# LOADING VCL #
+###############
 include "/etc/varnish/https.vcl";
 #vcl.label my_included_vcl_label my_included_vcl
 
@@ -63,9 +63,9 @@ backend back_java_sample {
     }
 }
 
-#########################
-#       VCL INIT
-#########################
+##########################
+#       VCL INIT         #
+##########################
 import directors;   # load the directors
 
 sub vcl_init {
@@ -75,9 +75,9 @@ sub vcl_init {
 }
 
 
-#####################
-# access control list
-#####################
+#######################
+# access control list #
+#######################
 acl acl_local_sample {
     "localhost";         // myself
     "192.0.2.0"/24;      // and everyone on the local network
@@ -90,8 +90,8 @@ acl acl_purge {
         "192.168.55.0"/24;
 }
 
-############
-# subroutines
+###############
+# subroutines #
 # call <subroutine>;
 #
 # ref: https://varnish-cache.org/docs/6.5/users-guide/vcl-built-in-subs.html
@@ -134,7 +134,7 @@ acl acl_purge {
 
 
 ###########################
-#     1. CLIENT SIDE
+#     1. CLIENT SIDE      #
 ###########################
 # Happens before we check if we have this in cache already.
 #
@@ -148,9 +148,9 @@ sub vcl_recv {
     #set req.http.X-Forwarded-Ssl = "on"; 
     #set req.http.X-Url-Scheme= "https";
 
-    #########
-    # SSL
-    #########
+    #######
+    # SSL #
+    #######
     call https_vcl_recv; #SSL
     if (req.http.X-Forwarded-Proto ~ "https") {
         set req.http.passed-by-recv-http = "yes";
@@ -162,9 +162,10 @@ sub vcl_recv {
         #set req.backend_hint = mob;
     }
 
-    ###############
-    # DIRECTORS : LOAD-BALANCING
-    ###############
+    ##################
+    # DIRECTORS      #
+    # LOAD-BALANCING #
+    ##################
     if (req.url ~ "^/url/from/java/") {
         set req.backend_hint = back_java_sample;
     } elsif (req.http.host ~ "bar.com" || req.http.host == "www.foo.com") { # sample.bar.com
@@ -194,9 +195,9 @@ sub vcl_recv {
         set req.http.Cookie = regsuball(req.http.Cookie, "; +", ";");
     }
 
-    ##############
-    # purge cache
-    ############
+    ###############
+    # Purge cache #
+    ###############
     if (req.method == "PURGE") {
         if (client.ip ~ acl_purge) {
             return (purge);
@@ -211,10 +212,10 @@ sub vcl_recv {
     #     return miss;
     # }
 
-    ####
-    # BAN 
+    #######
+    # BAN #
     # $ varnishadm ban req.http.host == example.com '&&' req.url '~' '\\.png$'
-    ####
+    #######
     if (req.method == "BAN") {
         # Same ACL check as above:
         if (!client.ip ~ acl_purge) {
@@ -225,6 +226,31 @@ sub vcl_recv {
         # Throw a synthetic page so the
         # request won't go to the backend.
         return(synth(200, "Ban added"));
+    }
+
+    ##### Admin
+    if (req.url ~ "/admin" && !client.ip ~ admin) {
+            return (synth(301, "/404"));
+    }
+
+    # Do not check in the cache media files
+    if (req.url ~ "\.(mp4|mp3|avi)$") {
+            return (pipe);
+    }
+
+    if (req.http.x-forwarded-for) {
+            set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+    } else {
+            set req.http.X-Forwarded-For = client.ip;
+    }
+
+    # If application does not manage other methods than HEAD, GET and POST
+    # Warning : if you use REST webservices, add DELETE and PUT to this list
+    if (req.method != "GET" &&
+            req.method != "HEAD" &&
+            req.method != "POST" ) {
+
+            return(synth(405, "Method not allowed."));
     }
 
     # websocket sample
@@ -253,9 +279,9 @@ sub vcl_recv {
 
 
 
-#######
-# SYNTH 
-#######
+#########
+# SYNTH #
+#########
 sub vcl_synth {
     if (resp.status == 301 || resp.status == 302) {
         set resp.http.location = resp.reason;
@@ -269,8 +295,7 @@ sub vcl_synth {
 ########
 sub vcl_hash {
     # used when storing object
-
-    call https_vcl_hash; #SSL
+    call https_vcl_hash; # SSL
 
     hash_data(req.url); # default
     if (req.http.host) {
@@ -278,17 +303,50 @@ sub vcl_hash {
     } else {
         hash_data(server.ip);
     }
+
+    ##########
+    # Sample #
+    ##########
+    hash_data(req.url);
+
+    if (req.http.Host) {
+        hash_data(req.http.Host);
+    } else {
+        hash_data(server.ip);
+    }
+
+    hash_data(req.http.Ssl-Offloaded);
+
+    if (req.http.Accept-Encoding) {
+        # make sure we give back the right encoding
+        hash_data(req.http.Accept-Encoding);
+    }
+
+    if (req.http.Cookie ~ "store=") {
+        hash_data("store=" + regsub(req.http.Cookie, "^.*?store=([^;]*);*.*$", "\1"));
+    }
+
+    if (req.http.Cookie ~ "customer_visibility=") {
+        hash_data("customer_visibility=" + regsub(req.http.Cookie, "^.*?customer_visibility=([^;]*);*.*$", "\1"));
+    }
+
+    # If this is a HTTPS request, keep it in a different cache
+    if (req.http.X-Forwarded-Proto) {
+        hash_data(req.http.X-Forwarded-Proto);
+    }
+
+    # Return
     return (lookup);
 
-    # splitted geo ip
+    # Splitted geo ip (if available)
     hash_data(req.http.X-Country-Code);
 }
 
 
-##############
-# PIPE for exemple 
+###############
+# PIPE sample #
 # bidirectionnal http Websocket
-##############
+###############
 sub vcl_pipe {
     if (req.http.upgrade) {
         set bereq.http.upgrade = req.http.upgrade;
@@ -298,7 +356,7 @@ sub vcl_pipe {
 
 
 ######################################
-#       2. BACKEND RESPONSE
+#       2. BACKEND RESPONSE          #
 ######################################
 # Happens after we have read the response headers from the backend.
 #
@@ -341,9 +399,25 @@ sub vcl_backend_response {
         set beresp.ttl = 120s; # how long not to cache this url.
     }
 
-    ####
-    # COMPRESS
-    ####
+    #################
+    # If we PASS-ed during vcl_recv, terminate here
+    # The object will not actually be cached
+    if (bereq.uncacheable) {
+        return(deliver);
+    }
+
+    set beresp.grace = 30s;
+
+    # Do not cache 302 temporary redirect and 50x errors
+    if (beresp.status == 302 || beresp.status >= 500) {
+        set beresp.uncacheable = true;
+        set beresp.ttl = 120s;
+        return (deliver);
+    }
+
+    ############
+    # COMPRESS #
+    ############
     if (beresp.http.content-type ~ "text") {
         set beresp.do_gzip = true;
     }
@@ -363,9 +437,23 @@ sub vcl_deliver {
     if ((req.http.X-UA-Device) && (resp.http.Vary)) {
         set resp.http.Vary = regsub(resp.http.Vary, "X-UA-Device", "User-Agent");
     }
+
+    if (obj.hits > 0) {
+        set resp.http.X-Cache = "HIT";
+        set resp.http.X-Cache-Hits = obj.hits;
+    } else {
+        set resp.http.X-Cache = "MISS";
+    }
+
+    # Set myfrontal ID
+    set resp.http.X-Front = "backend";
+
+    # Prevent disclosure
+    unset resp.http.Via;
+    unset resp.http.X-Powered-By;
+
+    return (deliver);
 }
-
-
 
 
 ############################
