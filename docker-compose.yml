@@ -7,7 +7,9 @@ services:
         volumes:
             - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
             - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/conf.d/:/etc/nginx/conf.d/:ro
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/snippets:/etc/nginx/snippets:ro
             - ${WEBSERVER}/${DIRECTORY}/public:/app-static
+            - ${WEBSERVER}/${DIRECTORY}:/var/www/
         ports:
             - 8001:80
         networks: 

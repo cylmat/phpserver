@@ -7,7 +7,7 @@ services:
     fpm: 
         build: .docker/df/fpm
         restart: always
-        working_dir: /var/www
+        container_name: fpm
         ports: 
             - 9000:9000
         environment:
@@ -28,7 +28,7 @@ services:
     fpm2: 
         build: .docker/df/fpm
         restart: always
-        working_dir: /var/www
+        container_name: fpm2
         ports: 
             - 9001:9000
         environment:
