@@ -10,10 +10,21 @@ $host = parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST);
 $title = "Php environment server";
 
 /**
+ * Get headers
+ */
+$headers = getallheaders();
+ksort($headers);
+$display_headers = "<h2>Headers</h2><table><tr class='h'><th>Variable</th><th>Value</th></tr>";
+array_walk($headers, function($v, $k) use (&$display_headers) { 
+    $display_headers .= "<tr><td class=\"e\">$k</td><td class=\"v\">$v</td></tr>\n"; 
+});
+$display_headers .= "</table>";
+
+/**
  * Get server variables
  */
 ob_start();
-phpinfo(INFO_VARIABLES);
+phpinfo(INFO_VARIABLES | INFO_ENVIRONMENT);
 $content = ob_get_clean();
 
 /**
@@ -34,6 +45,9 @@ foreach($servers as $label => $port) {
 echo preg_replace_callback_array([
     "/<title>.*<\/title>/" => function($match) use ($title, $bootstrap) { 
         return "<title>$title</title>$bootstrap"; 
+    },
+    "/<h2>Env/" => function($match) use ($display_headers) {
+        return "$display_headers<h2>Env"; 
     },
     "/<body>/" => function($match) use ($menu_btn) { 
         $menu = "\n" . 
