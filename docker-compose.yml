@@ -10,6 +10,11 @@ services:
             - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/snippets:/etc/nginx/snippets:ro
             - ${WEBSERVER}/${DIRECTORY}/public:/app-static
             - ${WEBSERVER}/${DIRECTORY}:/var/www/
+        environment:
+            NGINX_PORT:   8001
+            APACHE_PORT:  8002
+            HAPROXY_PORT: 8010
+            VARNISH_PORT: 8011
         ports:
             - 8001:80
         networks: 
