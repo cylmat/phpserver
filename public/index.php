@@ -4,7 +4,6 @@
  * Servers url
  */
 $servers = ['Nginx' => 8001, 'Apache' => 8002, 'HAProxy' => 8010, 'Varnish' => 8011 ];
-$js_ports = "'".join("','", array_values($servers))."'";
 extract($servers);
 $scheme = $_SERVER['REQUEST_SCHEME'];
 $host = parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST);
