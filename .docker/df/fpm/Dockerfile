@@ -5,9 +5,9 @@ FROM phpdockerio/php74-fpm:latest
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Install
-RUN apt-get update 
+RUN apt-get update && BUILD=1
 RUN apt-get install -y libzip4 libzip-dev lbzip2 zlib1g-dev libicu-dev libxml2-dev
-RUN apt-get install -y apt-utils curl gnupg gnupg2 bzip2 sqlite3 vim wget g++ zip
+RUN apt-get install -y apt-utils curl gnupg gnupg2 bzip2 sqlite3 vim netcat wget g++ zip
 
 # php 7.4 ext
 RUN apt-get install -y php7.4-dev php7.4-mysql php7.4-redis php7.4-intl php7.4-memcached php7.4-soap php7.4-pgsql php7.4-sqlite 

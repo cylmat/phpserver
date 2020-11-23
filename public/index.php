@@ -1,12 +1,24 @@
 <?php
 
+$servers = ['nginx'=>8001, 'apache'=>8002,'haproxy'=>8010, 'varnish'=>8011];
+
+/**
+ * Check servers from Ajax
+ */
+if (array_key_exists('check', $_GET)) {
+    $res = [];
+    foreach ($servers as $srv => $port) {
+        exec("nc -z phpenv-server_$srv\_1 80", $out, $ret);
+        $res[$srv] = $ret;
+    }
+    die(json_encode($res));
+}
+
 /**
  * Servers url
  */
-$servers = ['Nginx' => 8001, 'Apache' => 8002, 'HAProxy' => 8010, 'Varnish' => 8011 ];
-extract($servers);
 $scheme = $_SERVER['REQUEST_SCHEME'];
-$host = parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST);
+$host = $_SERVER['HTTP_HOST'];
 $title = "Php environment server";
 
 /**
@@ -35,7 +47,7 @@ $bootstrap = '<!-- Bootstrap core CSS -->
 
 $menu_btn = '';
 foreach($servers as $label => $port) {
-    $menu_btn .= "\n".'<li class="nav-item"><a class="status-'.$port.' nav-link" '. 
+    $menu_btn .= "\n".'<li class="nav-item"><a class="status-'.$label.' nav-link text-capitalize" '. 
             "href=\"$scheme://$host:$port\">$label</a></li>";
 }
 
@@ -60,24 +72,19 @@ echo preg_replace_callback_array([
 echo <<<S
 <script src="/jquery-3.5.1.min.js"></script>
 <script>
-    get_server(); // init
-    setInterval( function() { console.clear(); get_server(); }, 10000);
+    get_servers(); // init
+    setInterval( function() { console.clear(); get_servers(); }, 3000);
 
-    function status(port, status) {
-        $(".status-" + port).css('color', true === status ? "green" : "red");
+    function status(srv, status) {
+        $(".status-" + srv).css('color', 0 === status ? "green" : "red");
     }
-    function get_server() {
-        $.get("{$scheme}://{$host}:8001/", function(data) { status(8001, true) })
-            .fail(function() { status(8001, false) });
-
-        $.get("{$scheme}://{$host}:8002/", function(data) { status(8002, true) }, "jsonp")
-            .fail(function() { status(8002, false) });
-
-        $.get("{$scheme}://{$host}:8010/", function(data) { status(8010, true) }, "jsonp")
-            .fail(function() { status(8010, false) });
-
-        $.get("{$scheme}://{$host}:8011/", function(data) { status(8011, true) }, "jsonp")
-            .fail(function() { status(8011, false) });
+    function get_servers() {
+        $.get("{$scheme}://{$host}/?check", function(data) { 
+            var res = JSON.parse(data);
+            for (var [srv, stat] of Object.entries(res)) {
+                status(srv, stat);
+            }
+        });
     }
 </script>
 S;
