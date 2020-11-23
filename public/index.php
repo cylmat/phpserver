@@ -17,8 +17,9 @@ if (array_key_exists('check', $_GET)) {
 /**
  * Servers url
  */
-$scheme = $_SERVER['REQUEST_SCHEME'];
-$host = $_SERVER['HTTP_HOST'];
+$cscheme = $_SERVER['REQUEST_SCHEME'];
+$chost = parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST);
+$cport = parse_url($_SERVER['HTTP_HOST'], PHP_URL_PORT);
 $title = "Php environment server";
 
 /**
@@ -48,7 +49,7 @@ $bootstrap = '<!-- Bootstrap core CSS -->
 $menu_btn = '';
 foreach($servers as $label => $port) {
     $menu_btn .= "\n".'<li class="nav-item"><a class="status-'.$label.' nav-link text-capitalize" '. 
-            "href=\"$scheme://$host:$port\">$label</a></li>";
+            "href=\"$cscheme://$chost:$port\">$label</a></li>";
 }
 
 /**
@@ -79,7 +80,7 @@ echo <<<S
         $(".status-" + srv).css('color', 0 === status ? "green" : "red");
     }
     function get_servers() {
-        $.get("{$scheme}://{$host}/?check", function(data) { 
+        $.get("{$cscheme}://{$chost}:{$cport}/?check", function(data) { 
             var res = JSON.parse(data);
             for (var [srv, stat] of Object.entries(res)) {
                 status(srv, stat);
