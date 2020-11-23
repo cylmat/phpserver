@@ -9,6 +9,8 @@ services:
         restart: always
         ports:
             - 8010:80
+        volumes:
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/proxy/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg
         networks:
             - phpenv
 
