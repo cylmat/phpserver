@@ -53,6 +53,16 @@ foreach($servers as $label => $port) {
 }
 
 /**
+ * Links
+ */
+$links_nginx = include 'links/nginx.php';
+$links =  "<div class='jumbotron float-left' style='position:absolute'><h2>Snippets</h2><div>";
+foreach ($links_nginx['snippets'] as $label => $href) {
+    $links .= "<a href='$href'>$label</a>";
+}
+$links .= "</div></div>";
+
+/**
  * Display template
  */
 echo preg_replace_callback_array([
