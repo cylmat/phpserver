@@ -5,14 +5,7 @@ $servers = ['nginx'=>8001, 'apache'=>8002,'haproxy'=>8010, 'varnish'=>8011];
 /**
  * Check servers from Ajax
  */
-if (array_key_exists('check', $_GET)) {
-    $res = [];
-    foreach ($servers as $srv => $port) {
-        exec("nc -z phpenv-server_$srv\_1 80", $out, $ret);
-        $res[$srv] = $ret;
-    }
-    die(json_encode($res));
-}
+include 'check_servers.php';
 
 /**
  * Servers url
@@ -39,6 +32,10 @@ $display_headers .= "</table>";
 ob_start();
 phpinfo(INFO_VARIABLES | INFO_ENVIRONMENT);
 $content = ob_get_clean();
+preg_match("/<style.*style>/", str_replace("\n", "\r", $content), $php_css);
+preg_match("/<div.*div>/", str_replace("\n", "\r", $content), $php_env);
+$php_css = str_replace("\r", "\n", $php_css[0]);
+$php_env = str_replace("\r", "\n", $php_env[0]);
 
 /**
  * Set menu
@@ -52,35 +49,24 @@ foreach($servers as $label => $port) {
             "href=\"$cscheme://$chost:$port\">$label</a></li>";
 }
 
+$menu = "\n" . 
+'<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">' . 
+'<ul class="navbar-nav">' . $menu_btn . "</ul></nav>" . "\n";
+
 /**
  * Links
  */
 $links_nginx = include 'links/nginx.php';
-$links =  "<div class='jumbotron float-left' style='position:absolute'><h2>Snippets</h2><div>";
-foreach ($links_nginx['snippets'] as $label => $href) {
+$links =  "<div class='nav flex-column float-left' style='position:absolute'><h2>Nginx</h2><div>";
+foreach ($links_nginx as $label => $href) {
     $links .= "<a href='$href'>$label</a>";
 }
 $links .= "</div></div>";
 
 /**
- * Display template
+ * Scripts
  */
-echo preg_replace_callback_array([
-    "/<title>.*<\/title>/" => function($match) use ($title, $bootstrap) { 
-        return "<title>$title</title>$bootstrap"; 
-    },
-    "/<h2>Env/" => function($match) use ($display_headers) {
-        return "$display_headers<h2>Env"; 
-    },
-    "/<body>/" => function($match) use ($menu_btn) { 
-        $menu = "\n" . 
-            '<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">' . 
-            '<ul class="navbar-nav">' . $menu_btn . "</ul></nav>" . "\n";
-        return "<body>$menu"; 
-    }
-], $content);
-
-echo <<<S
+$script = <<<S
 <script src="/jquery-3.5.1.min.js"></script>
 <script>
     get_servers(); // init
@@ -99,3 +85,8 @@ echo <<<S
     }
 </script>
 S;
+
+/**
+ * Template
+ */
+include 'template.php';
