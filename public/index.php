@@ -49,15 +49,15 @@ foreach($servers as $label => $port) {
             "href=\"$cscheme://$chost:$port\">$label</a></li>";
 }
 
-$menu = "\n" . 
-'<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">' . 
-'<ul class="navbar-nav">' . $menu_btn . "</ul></nav>" . "\n";
+$menu = "\n" . '<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">' . 
+    '<ul class="navbar-nav">' . $menu_btn . "</ul></nav>" . "\n";
 
 /**
  * Links
  */
 $links_nginx = include 'links/nginx.php';
-$links =  "<div class='nav flex-column float-left' style='position:absolute'><h2>Nginx</h2><div>";
+$links =  "<div class='nav flex-column float-left' style='position:absolute'><h2>Nginx</h2>".
+            "<div class='d-flex flex-column'>";
 foreach ($links_nginx as $label => $href) {
     $links .= "<a href='$href'>$label</a>";
 }
