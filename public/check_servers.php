@@ -11,3 +11,8 @@ if (array_key_exists('check', $_GET)) {
     }
     die(json_encode($res));
 }
+
+/**
+ * For Nginx server checking
+ */
+if (!isset($_SERVER['HTTP_HOST'])) die;
