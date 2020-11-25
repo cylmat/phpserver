@@ -67,7 +67,7 @@ $links .= "</div></div>";
  * Scripts
  */
 $script = <<<S
-<script src="/jquery-3.5.1.min.js"></script>
+<script src="/js/jquery-3.5.1.min.js"></script>
 <script>
     function get_servers() {
         $.get("{$cscheme}://{$chost}:{$cport}/?check", function(data) { 
@@ -81,7 +81,7 @@ $script = <<<S
         $(".status-" + srv).css('color', 0 === status ? "green" : "red");
     }
 </script>
-<script src="/script.js"></script>
+<script src="/js/script.js"></script>
 S;
 
 /**
