@@ -45,10 +45,10 @@ $bootstrap = '<!-- Bootstrap core CSS -->
 
 $menu_btn = '';
 foreach($servers as $label => $port) {
-    $menu_btn .= "\n".'<li class="nav-item"><a class="status-'.$label.' nav-link text-capitalize" '. 
+    $current = $cport == $port ? ' bg-warning ' : '';
+    $menu_btn .= "\n".'<li class="nav-item"><a class="status-'.$label.$current.' nav-link text-capitalize" '. 
             "href=\"$cscheme://$chost:$port\">$label</a></li>";
 }
-
 $menu = "\n" . '<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">' . 
     '<ul class="navbar-nav">' . $menu_btn . "</ul></nav>" . "\n";
 
