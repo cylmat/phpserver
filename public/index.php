@@ -69,12 +69,6 @@ $links .= "</div></div>";
 $script = <<<S
 <script src="/jquery-3.5.1.min.js"></script>
 <script>
-    get_servers(); // init
-    setInterval( function() { console.clear(); get_servers(); }, 3000);
-
-    function status(srv, status) {
-        $(".status-" + srv).css('color', 0 === status ? "green" : "red");
-    }
     function get_servers() {
         $.get("{$cscheme}://{$chost}:{$cport}/?check", function(data) { 
             var res = JSON.parse(data);
@@ -83,7 +77,11 @@ $script = <<<S
             }
         });
     }
+    function status(srv, status) {
+        $(".status-" + srv).css('color', 0 === status ? "green" : "red");
+    }
 </script>
+<script src="/script.js"></script>
 S;
 
 /**
