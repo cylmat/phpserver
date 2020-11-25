@@ -10,6 +10,7 @@ services:
             - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/snippets:/etc/nginx/snippets:ro
             - ${WEBSERVER}/${DIRECTORY}/public:/app-static
             - ${WEBSERVER}/${DIRECTORY}:/var/www/
+            - /nginx/data/cache # create directory to use with nginx.conf
         ports:
             - 8001:80
         networks: 
