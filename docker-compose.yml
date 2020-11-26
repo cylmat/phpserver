@@ -23,7 +23,7 @@ services:
         ports: 
             - 8002:80
         volumes:
-            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/apache-httpd/:/usr/local/apache2/conf/:ro
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/apache/:/usr/local/apache2/conf/:ro
             - ${WEBSERVER}/${DIRECTORY}:/usr/local/apache2/htdocs/
         networks:
             - phpenv
