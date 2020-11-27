@@ -19,6 +19,8 @@ services:
         restart: always
         ports:
             - 8011:80
+        volumes:
+            - ${WEBSERVER}/${DIRECTORY}/.docker/config/proxy/varnish:/etc/varnish/
         networks:
             - phpenv
 
