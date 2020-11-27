@@ -11,55 +11,46 @@
 # Marker to tell the VCL compiler that this VCL has been adapted to the
 # new 4.0 format.
 
-# tips
-# https://varnish-cache.org/docs/6.5/users-guide/increasing-your-hitrate.html
+# @link https://varnish-cache.org/docs/6.5/users-guide/increasing-your-hitrate.html
 
 vcl 4.0;
 
 ###############
 # LOADING VCL #
 ###############
-include "/etc/varnish/https.vcl";
 #vcl.label my_included_vcl_label my_included_vcl
 
-###############
-# CLI samples #
-###############
-# varnish> ban req.url ~ "logo.*[.]png" 
-# varnish> param.set prefer_ipv6 true
-# varnish> stop
-
 #############
-# ref: https://varnish-cache.org/docs/6.5/reference/varnishd.html#list-of-parameters
+# @link https://varnish-cache.org/docs/6.5/reference/varnishd.html#list-of-parameters
 #############
 
 # Default backend definition. Set this to point to your content server.
-# backend default none;
+#apt-get update && apt-get install -y net-tools netcat curl
 backend default {
     .host = "nginx"; 
-    .port = "82";
+    .port = "80";
     .connect_timeout = 6000s;
     .first_byte_timeout = 6000s;
     .between_bytes_timeout = 6000s;
 }
 
-backend default_ssl {
-    .host = "nginx"; 
-    .port = "82";
-}
+# backend default_ssl {
+#     .host = "nginx"; 
+#     .port = "443";
+# }
 
 # sample
-backend back_java_sample { 
-    .host = "127.0.8.1";
-    .port = "8999";
+backend back_apache_sample { 
+    .host = "apache";
+    .port = "80";
 
-    #health check
+    # health check
     .probe = { 
-        .url = "/"; # send a get request to /
+        .url = "/"; # send a get request to "/"
         .timeout = 1s;
         .interval = 5s;
         .window = 5; # max try
-        .threshold = 3; # considéré valide if 3 on 5 are ok
+        .threshold = 3; # valid if 3 on 5 are ok
     }
 }
 
@@ -71,7 +62,6 @@ import directors;   # load the directors
 sub vcl_init {
     new bar_director = directors.round_robin(); # create a group of backends
     bar_director.add_backend(default);
-    bar_director.add_backend(back_java_sample);
 }
 
 
@@ -80,21 +70,26 @@ sub vcl_init {
 #######################
 acl acl_local_sample {
     "localhost";         // myself
+
+    # CIDR
     "192.0.2.0"/24;      // and everyone on the local network
     ! "192.0.2.23";      // except for the dialin router
 }
 
-# specific purge
+# Specific ACL users for purging cache
 acl acl_purge {
-        "localhost";
-        "192.168.55.0"/24;
+    "192.168.55.0"/24;
+}
+
+acl acl_admin {
+    "192.168.56.0"/24;
 }
 
 ###############
 # subroutines #
 # call <subroutine>;
 #
-# ref: https://varnish-cache.org/docs/6.5/users-guide/vcl-built-in-subs.html
+# @link https://varnish-cache.org/docs/6.5/users-guide/vcl-built-in-subs.html
 #
 # CLIENT SIDE #
 #
@@ -139,38 +134,40 @@ acl acl_purge {
 # Happens before we check if we have this in cache already.
 #
 sub vcl_recv {
-    # Typically you clean up the request here, removing cookies you don't need,
-    # rewriting the request, etc.
-    
-    #set req.http.X-Forwarded-Proto = "https";
+#     # Typically you clean up the request here, removing cookies you don't need,
+#     # rewriting the request, etc.
 
-    # non-standard micro$oft
-    #set req.http.X-Forwarded-Ssl = "on"; 
-    #set req.http.X-Url-Scheme= "https";
+#     #######
+#     # SSL #
+#     #######
+#     set req.http.X-Forwarded-Proto = "https";
 
-    #######
-    # SSL #
-    #######
-    call https_vcl_recv; #SSL
-    if (req.http.X-Forwarded-Proto ~ "https") {
-        set req.http.passed-by-recv-http = "yes";
-        set req.backend_hint = default_ssl;
-        return (pass);
-    }
+#     # non-standard micro$oft
+#     set req.http.X-Forwarded-Ssl = "on"; 
+#     set req.http.X-Url-Scheme= "https";
 
-    if (req.http.User-agent ~ "/mobile/") {
-        #set req.backend_hint = mob;
-    }
+#     include "/etc/varnish/https.vcl";
+#     call https_vcl_recv; #SSL
+    # if (req.http.X-Forwarded-Proto ~ "https") {
+    #     set req.http.passed-by-recv-http = "yes";
+    #     set req.backend_hint = default_ssl;
+    #     return (pass);
+    # }
 
-    ##################
-    # DIRECTORS      #
-    # LOAD-BALANCING #
-    ##################
+    # if (req.http.User-agent ~ "/mobile/") {
+    #     set req.backend_hint = mob;
+    # }
+
+#     ##################
+#     # DIRECTORS      #
+#     # LOAD-BALANCING #
+#     ##################
     if (req.url ~ "^/url/from/java/") {
-        set req.backend_hint = back_java_sample;
+        set req.backend_hint = back_apache_sample;
     } elsif (req.http.host ~ "bar.com" || req.http.host == "www.foo.com") { # sample.bar.com
         set req.backend_hint = bar_director.backend(); # SAMPLE WITH DIRECTOR
     } else {
+        # everything else
         set req.backend_hint = default;
     }
 
@@ -207,16 +204,17 @@ sub vcl_recv {
     }
 
     # cache miss
-    # if (req.http.always_miss) {
-    #     set req.hash_always_miss = true;
-    #     return miss;
-    # }
+    if (req.http.always_miss) {
+        set req.hash_always_miss = true;
+        return (pass);
+    }
 
-    #######
-    # BAN #
-    # $ varnishadm ban req.http.host == example.com '&&' req.url '~' '\\.png$'
-    #######
+#     #######
+#     # BAN #
+#     # $ varnishadm ban req.http.host == example.com '&&' req.url '~' '\\.png$'
+#     #######
     if (req.method == "BAN") {
+
         # Same ACL check as above:
         if (!client.ip ~ acl_purge) {
                 return(synth(403, "Not allowed."));
@@ -229,7 +227,7 @@ sub vcl_recv {
     }
 
     ##### Admin
-    if (req.url ~ "/admin" && !client.ip ~ admin) {
+    if (req.url ~ "/admin" && !client.ip ~ acl_admin) {
             return (synth(301, "/404"));
     }
 
@@ -247,10 +245,10 @@ sub vcl_recv {
     # If application does not manage other methods than HEAD, GET and POST
     # Warning : if you use REST webservices, add DELETE and PUT to this list
     if (req.method != "GET" &&
-            req.method != "HEAD" &&
-            req.method != "POST" ) {
+        req.method != "HEAD" &&
+        req.method != "POST" ) {
 
-            return(synth(405, "Method not allowed."));
+        return(synth(405, "Method not allowed."));
     }
 
     # websocket sample
@@ -273,7 +271,7 @@ sub vcl_recv {
     }
 
     # default behavior, deliver result
-    set req.http.passed-by-recv-http = "full";
+    set req.http.passed-by-recv-http = "Custom from Varnish!";
     return (pass);
 }
 
@@ -295,7 +293,7 @@ sub vcl_synth {
 ########
 sub vcl_hash {
     # used when storing object
-    call https_vcl_hash; # SSL
+    #call https_vcl_hash; # SSL
 
     hash_data(req.url); # default
     if (req.http.host) {
@@ -358,6 +356,10 @@ sub vcl_pipe {
 ######################################
 #       2. BACKEND RESPONSE          #
 ######################################
+sub vcl_backend_response {
+    return (deliver);
+}
+
 # Happens after we have read the response headers from the backend.
 #
 sub vcl_backend_response {
@@ -365,14 +367,14 @@ sub vcl_backend_response {
     # and other mistakes your backend does.
 
     # TOTAL grace + keep10m
-    # https://varnish-cache.org/docs/6.5/users-guide/vcl-grace.html
+    # @link https://varnish-cache.org/docs/6.5/users-guide/vcl-grace.html
 
-    #GRACE, "smooth": sert l'object après la fin du TTL, 
-    #pendant qu'il récupère un nouveau du backend
+    # GRACE, "smooth": sert l'object après la fin du TTL, 
+    # pendant qu'il récupère un nouveau du backend
     set beresp.grace = 2m;
 
-    #KEEP: garde l'object en "défaut" si le contenu ne peut être chargé
-    #If-Modified-Since: and/or Ìf-None-Match: headers 304 Not Modified
+    # KEEP: garde l'object en "défaut" si le contenu ne peut être chargé
+    # If-Modified-Since: and/or Ìf-None-Match: headers 304 Not Modified
     set beresp.keep = 8m;
 
     # stop cache for 500
@@ -456,15 +458,6 @@ sub vcl_deliver {
 }
 
 
-############################
-#       LOGGING
-############################
-# $ varnishlog -g raw -b(ackend) -c(lient)
-# $ varnish-top/hist/stat
-
-# $ varnishlog -d -q 'RespStatus == 503' -g request
-
-
 
 # ##################
 # ORIGINAL CONFIG #
@@ -473,7 +466,6 @@ sub vcl_deliver {
 #     .host = "127.0.0.1";
 #     .port = "8080";
 # }
-
-# sub vcl_recv {
-# sub vcl_backend_response {
-# sub vcl_deliver {
+# sub vcl_recv {}
+# sub vcl_backend_response {}
+# sub vcl_deliver {}
