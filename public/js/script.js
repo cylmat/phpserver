@@ -13,7 +13,8 @@ function loadJQuery() {
 
 $(document).ready(function(){
     get_servers(); // init
-    setInterval( function() { console.clear(); get_servers(); }, 3000);
+    get_db(); // init
+    setInterval( function() { console.clear(); get_servers(); get_db(); }, 5000);
 })
 
 // Load jQuery

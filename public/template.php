@@ -14,6 +14,7 @@ echo <<<TEMPLATE
 </head>
 <body>
     $menu
+    $db_stats
     $links
     <div class="center">
         $display_headers

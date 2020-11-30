@@ -2,6 +2,9 @@
 
 $servers = ['nginx'=>8001, 'apache'=>8002,'haproxy'=>8010, 'varnish'=>8011];
 
+error_reporting(-1);
+ini_set('display_errors','on');
+
 /**
  * Check servers from Ajax
  */
@@ -53,6 +56,17 @@ $menu = "\n" . '<nav class="navbar navbar-expand-lg navbar-light bg-light justif
     '<ul class="navbar-nav">' . $menu_btn . "</ul></nav>" . "\n";
 
 /**
+ * Databases
+ */
+$db_servers = ['dba', 'mariadb', 'memcached', 'mysql', 'redis', 'sqlite'];
+$db_btn = '';
+foreach($db_servers as $label) {
+    $db_btn .= "\n".'<li class="nav-item"><span class="status-'.$label.' nav-link text-capitalize" ' . ">$label</span></li>";
+}
+$db_stats = "\n" . '<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">' . 
+    '<ul class="navbar-nav">'  . "$db_btn</ul></nav>" . "\n";
+
+/**
  * Links
  */
 $links_nginx = include 'links/nginx.php';
@@ -70,7 +84,15 @@ $script = <<<S
 <script src="/js/jquery-3.5.1.min.js"></script>
 <script>
     function get_servers() {
-        $.get("{$cscheme}://{$chost}:{$cport}/?check", function(data) { 
+        $.get("{$cscheme}://{$chost}:{$cport}/?check&"+$.now(), function(data) { 
+            var res = JSON.parse(data);
+            for (var [srv, stat] of Object.entries(res)) {
+                status(srv, stat);
+            }
+        });
+    }
+    function get_db() {
+        $.get("{$cscheme}://{$chost}:{$cport}/?check_db&"+$.now(), function(data) { 
             var res = JSON.parse(data);
             for (var [srv, stat] of Object.entries(res)) {
                 status(srv, stat);
@@ -78,7 +100,7 @@ $script = <<<S
         });
     }
     function status(srv, status) {
-        $(".status-" + srv).css('color', 0 === status ? "green" : "red");
+        $(".status-" + srv).css('color', 1 === status ? "green" : "red");
     }
 </script>
 <script src="/js/script.js"></script>
