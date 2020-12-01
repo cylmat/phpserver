@@ -39,9 +39,9 @@ $res["sqlite"]  = pdo_check("sqlite", "sqlite:/sqlite/sqlite.db3");
 // REDIS
 try { 
     $redis = new Redis;
-    $redis->connect('redis', 6379);
-    $redis->set("key", " redis-ok ");
-    $res["redis"] = 1;
+    @$redis->connect('redis', 6379); // @throws error
+    $redis->set("key", "ok");
+    $res["redis"] = $redis->get("key") === "ok" ? 1 : 0;
 } catch(\Exception $e) {
     $res["redis"] = 0;
 }
@@ -50,8 +50,8 @@ try {
 try {
     $mc = new Memcached; 
     $mc->addServer("memcached", 11211); 
-    $mc->set("test", "memcached-ok"); 
-    $res["memcached"] = 1;
+    $mc->set("key", "ok"); 
+    $res["memcached"] = $mc->get("key") === "ok" ? 1 : 0;
 } catch(\Exception $e) {
     $res["memcached"] = 0;
 }
