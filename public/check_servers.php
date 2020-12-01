@@ -1,7 +1,7 @@
 <?php
 
 // Disable cache 
-header("Cache-Control", "no-cache,no-store,must-revalidate,pre-check=0,post-check=0");
+header("Cache-Control: no-cache,no-store,must-revalidate,pre-check=0,post-check=0");
 
 /**
  * Check servers from Ajax
