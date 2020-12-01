@@ -1,5 +1,6 @@
 <?php
 
+setcookie('Custom','index.php-OK',time()+999,'/');
 $servers = ['nginx'=>8001, 'apache'=>8002,'haproxy'=>8010, 'varnish'=>8011];
 
 error_reporting(-1);
