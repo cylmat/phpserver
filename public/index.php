@@ -70,13 +70,23 @@ $db_stats = "\n" . '<nav class="navbar navbar-expand-lg navbar-light bg-light ju
 /**
  * Links
  */
+$links_haproxy = include 'links/haproxy.php';
 $links_nginx = include 'links/nginx.php';
-$links =  "<div class='nav flex-column float-left' style='position:absolute'><h2>Nginx</h2>".
-            "<div class='d-flex flex-column'>";
+$links = "<div class='nav flex-column float-left' style='position:absolute'>";
+
+$links .= "<h2>HAProxy</h2><div class='d-flex flex-column mb-4'>";
+foreach ($links_haproxy as $label => $href) {
+    $links .= "<a href='$href'>$label</a>";
+}
+$links .= "</div>";
+
+$links .= "<h2>Nginx</h2><div class='d-flex flex-column'>";
 foreach ($links_nginx as $label => $href) {
     $links .= "<a href='$href'>$label</a>";
 }
-$links .= "</div></div>";
+$links .= "</div>";
+
+$links .= "</div>";
 
 /**
  * Scripts
