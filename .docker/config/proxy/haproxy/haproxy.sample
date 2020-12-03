@@ -2,6 +2,7 @@
 # and the haproxy stats socket is available at /var/run/haproxy.stats
 #
 # https://www.haproxy.com/fr/blog/haproxy-varnish-and-the-single-hostname-website/
+# https://gist.github.com/sudhindrasajjal
 
 global
     stats socket ./haproxy.stats level admin
