@@ -1,7 +1,12 @@
 <?php
 
+defined('APP') or die("Can't be called alone");
+
 // Disable cache 
 header("Cache-Control: no-cache,no-store,must-revalidate,pre-check=0,post-check=0");
+
+error_reporting(-1);
+ini_set('display_errors','on');
 
 /**
  * Check servers from Ajax
@@ -18,15 +23,20 @@ if (array_key_exists('check', $_GET)) {
 /**
  * Check databases from Ajax
  */
+
 if (array_key_exists('check_db', $_GET)):
 
 function pdo_check($host, $url) {
     try {
         $pdo = new PDO("$url", $_SERVER['DB_USER'], $_SERVER['DB_PASS']);
-        $r = $pdo->query("CREATE TEMPORARY TABLE IF NOT EXISTS tests_my (id int, my int);");
+        $pdo->exec("CREATE TEMPORARY TABLE IF NOT EXISTS tests_db (id int, my int);");
+        $pdo->exec("INSERT INTO tests_db (id, my) VALUES (18, 1)");
+        $r = ($pdo->query("SELECT my FROM tests_db WHERE id = 18;"))->fetch()["my"];
         if (false === $r) throw new PDOException("$host Query failed!");
-        return 1;
+        return (int)$r;
     } catch (PDOException $e) {
+        return 0;
+    } catch (Exception $e) {
         return 0;
     }
 }
