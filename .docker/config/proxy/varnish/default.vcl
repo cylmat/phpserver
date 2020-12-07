@@ -270,6 +270,16 @@ sub vcl_recv {
         return (synth(302, "http://my-varnish-cache.org"));
     }
 
+    if (req.http.Cache-Control ~ "no-cache" && client.ip ~ acl_admin) {                                                                     
+        set req.hash_always_miss = true;                                                                                                
+    }   
+
+    if (req.http.x-forwarded-for) {                                                                                                     
+        set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;                                                     
+    } else {                                                                                                                            
+        set req.http.X-Forwarded-For = client.ip;                                                                                       
+    }      
+
     # default behavior, deliver result
     set req.http.passed-by-recv-http = "Custom from Varnish!";
     return (pass);
@@ -352,6 +362,25 @@ sub vcl_pipe {
     }
 }
 
+#######
+# HIT #
+#######
+sub vcl_hit {                                                                                                                           
+    if (req.method == "PURGE") {                                                                                                        
+         #set beresp.ttl = 0s;                                                                                                          
+         return(synth(200, "Varnish cache has been purged for this object."));                                                          
+    }                                                                                                                                   
+}                                                                                                                                       
+
+########
+# MISS #
+########                                                                                                                            
+sub vcl_miss {                                                                                                                          
+    if (req.method == "PURGE") {                                                                                                        
+        return(synth(404, "Object not in cache."));                                                                                     
+    }                                                                                                                                   
+}    
+
 
 ######################################
 #       2. BACKEND RESPONSE          #
@@ -380,7 +409,7 @@ sub vcl_backend_response {
     # stop cache for 500
     if (beresp.status >= 500 && bereq.is_bgfetch) {
           return (abandon);
-    }
+    } 
 
     # ex: override ttl
     if (bereq.url ~ "\.(png|gif|jpg)$") {
@@ -423,6 +452,22 @@ sub vcl_backend_response {
     if (beresp.http.content-type ~ "text") {
         set beresp.do_gzip = true;
     }
+
+    # Define cache time depending on type, URL or status code                                                                           
+    if (beresp.status == 301 || (beresp.status >=400 &&  beresp.status < 500)) {                                                        
+        # Permanent redirections and client error cached for a short time                                                               
+        set beresp.ttl = 120s;                                                                                                          
+    } elsif (bereq.url ~ "\.(gif|jpg|jpeg|bmp|png|tiff|tif|ico|img|tga|wmf)$") {                                                        
+        set beresp.ttl = 1d;                                                                                                            
+    } elsif (bereq.url ~ "/skin/") {                                                                                                    
+        set beresp.ttl = 2h;                                                                                                            
+    } else {                                                                                                                            
+        # Default for all other resources, included pages.                                                                              
+        set beresp.ttl = 2400s;                                                                                                         
+    }                                                                                                                                   
+                                                                                                                                        
+    unset beresp.http.Set-Cookie;                                                                                                       
+    return (deliver);   
 }
 
 
