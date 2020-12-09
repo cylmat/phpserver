@@ -4,6 +4,11 @@
 - Apache
 - Https
 
+## [0.3.1] - 2020/12/09
+### Modified
+- Servers config
+- Databases config
+
 ## [0.3.0] - 2020/11/30
 ### Added
 - Databases 
