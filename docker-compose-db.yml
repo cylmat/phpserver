@@ -52,6 +52,22 @@ services:
         networks:
             - phpenv
 
+    # mongodb:
+    #     image: mongo:3.0.15
+    #     labels:
+    #         - "traefik.enable=false"
+    #     environment:
+    #         MONGO_INITDB_ROOT_USERNAME: 'root'
+    #         MONGO_INITDB_ROOT_PASSWORD: 'root'
+    #         MONGO_INITDB_DATABASE : 'mongo'
+    #     volumes:
+    #         - ./mongo/data/db:/data/db
+    #         - ./mongo/mongod.conf:/etc/mongod.conf
+    #         - ./mongo/files/init.js:/docker-entrypoint-initdb.d/init.js:ro
+    #     command: [--config /etc/mongod.conf]
+    #     networks:
+    #         - phpenv
+
     redis:
         image: redis:6.0  
         restart: always
