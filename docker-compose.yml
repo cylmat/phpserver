@@ -4,6 +4,8 @@ services:
     nginx:
         image: nginx:1.17
         restart: always
+        labels:
+            - "traefik.enable=false"
         volumes:
             - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
             - ${WEBSERVER}/${DIRECTORY}/.docker/config/srv/nginx/conf.d/:/etc/nginx/conf.d/:ro
@@ -19,6 +21,8 @@ services:
     # SECOND SERVER TO TRY LOAD-BALANCING
     apache:
         image: httpd:2.4
+        labels:
+            - "traefik.enable=false"
         restart: always
         ports: 
             - 8002:80
