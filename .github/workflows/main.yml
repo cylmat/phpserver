@@ -32,11 +32,10 @@ jobs:
     - name: Run makefile
       run: |
         cd .docker
-        sudo make compose-fpm
-        sudo make compose-srv
+        docker-compose build -f docker-compose-fpm.yml --pull --no-cache
 
     - name: Check running containers
-      run: sudo make container-ps
+      run: sudo make container_ps
 
     - name: Check servers
       run: sudo docker run --rm fpm bash -c "/var/www/public/index.php"
