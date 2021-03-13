@@ -18,7 +18,7 @@ image-list:
 container-list:
 	docker container ls
 
-container-ps:
+container_ps:
 	docker container ps -a
 
 ###
