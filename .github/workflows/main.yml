@@ -17,6 +17,11 @@ jobs:
     # - name: Validate composer.json and composer.lock
     #   run: composer validate --strict
 
+    - name: Sources list
+      run: echo \
+        "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
     - name: Install Docker cli
       run: | 
         cd /tmp
