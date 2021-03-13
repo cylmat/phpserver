@@ -1,4 +1,4 @@
-name: PHP Composer
+name: PhpEnv-Server
 
 on:
   push:
