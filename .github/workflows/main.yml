@@ -17,11 +17,11 @@ jobs:
     # - name: Validate composer.json and composer.lock
     #   run: composer validate --strict
 
-    - name: Install Docker cli from .deb
+    - name: Install Docker cli
       run: | 
         cd /tmp
-        sudo wget https://download.docker.com/linux/ubuntu/dists/bionic/pool/stable/amd64/docker-ce-cli_19.03.9~3-0~ubuntu-bionic_amd64.deb
-        sudo dpkg -i docker-ce-cli_19.03.9~3-0~ubuntu-bionic_amd64.deb
+        sudo apt-get update
+        sudo apt-get install docker-ce docker-ce-cli containerd.io
 
     - name: Run hello-world
       run: sudo docker run hello-world
