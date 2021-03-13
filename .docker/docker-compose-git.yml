@@ -1,0 +1,21 @@
+version: '3'
+
+services: 
+    #######
+    # Git #
+    #######
+    git:
+        image: jkarlos/git-server-docker:latest
+        restart: always
+        ports:
+            - '2222:22'
+        volumes: 
+            - ${WEBSERVER}${DIRECTORY}/.docker/.git-server/keys:/git-server/keys
+            - ${WEBSERVER}${DIRECTORY}/.docker/.git-server/repos:/git-server/repos
+        expose:
+            - 2222
+        networks: 
+            - phpenv
+
+networks: 
+    phpenv:

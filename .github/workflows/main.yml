@@ -7,8 +7,7 @@ on:
     branches: [ main, dev, docker-test ]
 
 jobs:
-  build:
-
+  get_and_run:
     runs-on: ubuntu-18.04
 
     steps:
@@ -20,29 +19,24 @@ jobs:
     ###
     # https://docs.docker.com/engine/install/ubuntu/
     ###
-    - name: Update
-      run: sudo apt-get update
-
-    - name: Certs
-      run: sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
-
-    - name: key
-      run: sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-    - name: Sources list
-      run: sudo echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
     - name: Install Docker cli
-      run: | 
+      run: |
         cd /tmp
+        sudo apt-get update
+        sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        sudo echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         sudo apt-get update
         sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-    - name: Run hello-world
-      run: sudo docker run hello-world
+    - name: Run makefile
+      run: |
+        cd .docker
+        sudo make compose-fpm
+        sudo make compose-srv
 
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
+    - name: Check running containers
+      run: sudo make container-ps
 
-    # - name: Run test suite
-    #   run: composer run-script test
+    - name: Check servers
+      run: sudo docker run --rm fpm bash -c "/var/www/public/index.php"

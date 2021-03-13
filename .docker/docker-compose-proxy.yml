@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+    #################
+    # PROXY - CACHE #
+    #################
+    haproxy:
+        image: haproxy:2.2
+        restart: always
+        ports:
+            - 8010:80
+            - 51510:51510
+        volumes:
+            - ${WEBSERVER}${DIRECTORY}/.docker/config/proxy/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg
+        networks:
+            - phpenv
+
+    varnish: 
+        image: varnish:6.0
+        restart: always
+        labels:
+            - "traefik.frontend.rule=Host:docker"
+        ports:
+            - 8011:80
+        volumes:
+            - ${WEBSERVER}${DIRECTORY}/.docker/config/proxy/varnish:/etc/varnish/
+        networks:
+            - phpenv
+
+    # traefik:
+    #     image: traefik:1.7
+    #     restart: always
+    #     ports:
+    #         - "80:80"
+    #         - "443:443"
+    #         - "8080:8080"
+    #     volumes:
+    #         - /var/run/docker.sock:/var/run/docker.sock
+    #         - $PWD/traefik.toml:/etc/traefik/traefik.toml
+    #         - $PWD/acme.json:/acme.json
+    #     command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+    #     networks:
+    #         - phpenv
+
+networks: 
+    phpenv:
