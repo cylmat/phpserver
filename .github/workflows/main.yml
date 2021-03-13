@@ -20,12 +20,11 @@ jobs:
     - name: Install Docker prerequisite
       run: |
         sudo apt-get update
-        sudo apt-get remove docker docker-engine docker.io containerd runc
         sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
         sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
-    - name: Install Docker cli
-      run: sudo apt-get install docker-ce docker-ce-cli containerd.io
+    # - name: Install Docker cli
+    #   run: sudo apt-get install docker-ce docker-ce-cli containerd.io
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
