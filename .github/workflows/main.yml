@@ -17,6 +17,9 @@ jobs:
     # - name: Validate composer.json and composer.lock
     #   run: composer validate --strict
 
+    ###
+    # https://docs.docker.com/engine/install/ubuntu/
+    ###
     - name: Update
       run: sudo apt-get update
 
@@ -32,7 +35,8 @@ jobs:
     - name: Install Docker cli
       run: | 
         cd /tmp
-        sudo apt-get install docker-ce docker-ce-cli containerd.io
+        sudo apt-get update
+        sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
     - name: Run hello-world
       run: sudo docker run hello-world
