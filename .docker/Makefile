@@ -4,10 +4,10 @@ SHELL := /bin/bash
 # Compose
 ###
 compose-fpm:
-	docker-compose build -f docker-compose-fpm.yml --pull --no-cache
+	docker-compose -f docker-compose-fpm.yml up --build -d
 
 compose-srv:
-	docker-compose build -f docker-compose-srv.yml --pull --no-cache
+	docker-compose -f docker-compose-srv.yml up --build -d
 
 ###
 # list
