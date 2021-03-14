@@ -20,7 +20,7 @@ jobs:
     ###
     # https://docs.docker.com/engine/install/ubuntu/
     ###
-    - uses: clymate/docker-action@v1.1
+    - uses: clymate/docker-action@v1.2
     # - name: Install Docker cli
     #   run: |
     #     cd /tmp
