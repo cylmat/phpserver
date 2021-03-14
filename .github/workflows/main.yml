@@ -8,6 +8,7 @@ on:
 
 jobs:
   get_and_run:
+    name: Get docker and run containers
     runs-on: ubuntu-18.04
 
     steps:
