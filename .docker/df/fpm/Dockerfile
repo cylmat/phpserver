@@ -33,9 +33,22 @@ RUN apt-get install -y php7.4-odbc
 # Php-Redis: https://github.com/phpredis/phpredis/
 RUN echo 'yes' | pecl install redis-5.3.1
 
-###########################
-#         BENCH           #
-###########################
+########################
+# Coverage & profiling #
+########################
+
+# Coverage
+# RUN apt-get install -y php7.4-xdebug php7.4-phpdbg
+# RUN pecl install pcov
+
+# XHPROF (tideways)
+# WORKDIR /tmp
+# RUN apt-get install -y graphviz
+# RUN wget https://github.com/tideways/php-xhprof-extension/archive/master.zip && unzip master.zip && rm master.zip
+# WORKDIR /tmp/php-xhprof-extension-master 
+# RUN phpize && ./configure
+# RUN make && make install
+# RUN echo "extension=tideways_xhprof.so" > /etc/php/7.4/fpm/conf.d/xhprof.ini
 
 # Apache bench
 RUN apt-get install -y apache2-utils

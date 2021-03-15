@@ -14,8 +14,8 @@ services:
             MYSQL_DATABASE: mydb
         command: "--innodb_use_native_aio=0"
         volumes:
-            - ${WEBSERVER}${DIRECTORY}/.docker/config/db/mysql/:/etc/mysql/:ro
-            - ${WEBSERVER}${DIRECTORY}/.data/mysql:/var/lib/mysql
+            - ${DIRECTORY}/.docker/config/db/mysql/:/etc/mysql/:ro
+            - ${DIRECTORY}/.data/mysql:/var/lib/mysql
         ports:
             - 3306:3306
         networks: 
@@ -33,8 +33,8 @@ services:
             - 3307:3306
         command: "--innodb_use_native_aio=0"
         volumes:
-            - ${WEBSERVER}${DIRECTORY}/.docker/config/db/maria/:/etc/mysql/
-            - ${WEBSERVER}${DIRECTORY}/.data/maria/:/var/lib/mysql
+            - ${DIRECTORY}/.docker/config/db/maria/:/etc/mysql/
+            - ${DIRECTORY}/.data/maria/:/var/lib/mysql
         networks:
             - phpenv
 
@@ -74,8 +74,8 @@ services:
         ports:
             - 6379:6379
         volumes: 
-            - ${WEBSERVER}${DIRECTORY}/.docker/config/db/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
-            - ${WEBSERVER}${DIRECTORY}/.data/redis/:/data/
+            - ${DIRECTORY}/.docker/config/db/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+            - ${DIRECTORY}/.data/redis/:/data/
         networks:
             - phpenv
     
@@ -92,3 +92,10 @@ networks:
 
 volumes:
     pgdata:
+
+###
+# Tuner
+# https://github.com/major/MySQLTuner-perl
+#
+# Data
+# https://min.io

@@ -31,3 +31,15 @@ services:
           
 networks: 
     phpenv:
+
+###
+# Boxes
+# https://devilbox.org
+# https://nanobox.io
+# https://laradock.io/
+# https://github.com/laraedit/laraedit-docker
+# https://laragon.org/
+# https://easyphp.org/
+#
+# Lamp
+# https://hub.docker.com/r/mattrayner/lamp
