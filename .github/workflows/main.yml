@@ -8,34 +8,37 @@ on:
 
 jobs:
   run-fpm:
-    name: Get docker and run containers
+    name: Check fpm
     runs-on: ubuntu-18.04
 
     steps:
     - uses: actions/checkout@v2
     - uses: clymate/docker-action@v1
-    
-    - name: Check fpm
-      run: |
-        sudo source .env
-        cd ./.docker
-        sudo docker-compose -f 'docker-compose-fpm.yml' up --build -d
-        sudo make container_ps
-        sudo docker run --rm fpm bash -c "/var/www/public/index.php"
 
-  run-srv:
-    name: Get docker and run containers
-    runs-on: ubuntu-18.04
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: clymate/docker-action@v1
-    
-    - name: Check srv
+    - name: Compose fpm and srv
       run: |
-        sudo source .env
-        cd ./.docker
+        sudo source .env && cd ./.docker
         sudo docker-compose -f 'docker-compose-fpm.yml' up --build -d
         docker-compose -f 'docker-compose-srv.yml' up --build -d
         make container_ps
-        sudo docker run --rm fpm bash -c "/var/www/public/index.php"
+    
+    - name: Check fpm
+      run: sudo docker run --rm fpm bash -c "/var/www/public/index.php"
+
+  run-srv:
+    name: Check srv
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - uses: actions/checkout@v2
+    - uses: clymate/docker-action@v1
+    
+    - name: Compose fpm and srv
+      run: |
+        sudo source .env && cd ./.docker
+        sudo docker-compose -f 'docker-compose-fpm.yml' up --build -d
+        docker-compose -f 'docker-compose-srv.yml' up --build -d
+        make container_ps
+
+    - name: Check srv
+      run: sudo docker run --rm fpm bash -c "/var/www/public/index.php"
