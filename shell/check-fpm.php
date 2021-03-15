@@ -1,3 +1,3 @@
 <?php
 
-echo "Php fonctionnal!\n";
+echo "Php-Fpm fonctionnal [OK]\n";
