@@ -17,12 +17,12 @@ jobs:
 
     - name: Compose fpm
       run: |
-        source .env && cd ./.docker
+        source .env && cd .docker
         make compose-fpm
-        make container_ps
+        make container-ps
     
     - name: Check fpm
-      run: make check-fpm
+      run: cd .docker && make check-fpm
 
   # run-srv:
   #   name: Check srv
