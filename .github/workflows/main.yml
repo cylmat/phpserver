@@ -24,7 +24,7 @@ jobs:
         env
     
     #- name: Check fpm
-      run: sudo docker run --rm fpm bash -c "/var/www/public/index.php"
+    #  run: sudo docker run --rm fpm bash -c "/var/www/public/index.php"
 
   # run-srv:
   #   name: Check srv
