@@ -16,12 +16,11 @@ jobs:
     #- uses: clymate/docker-action@v1
 
     - name: Compose fpm and srv
-        #sudo docker-compose -f 'docker-compose-fpm.yml' up --build -d
         #docker-compose -f 'docker-compose-srv.yml' up --build -d
         #make container_ps
       run: |
         source .env && cd ./.docker
-        env
+        docker-compose -f 'docker-compose-fpm.yml' up --build -d
     
     #- name: Check fpm
     #  run: sudo docker run --rm fpm bash -c "/var/www/public/index.php"
