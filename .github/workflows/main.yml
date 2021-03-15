@@ -13,17 +13,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    #- uses: clymate/docker-action@v1
+    - uses: clymate/docker-action@v1
 
-    - name: Compose fpm and srv
-        #docker-compose -f 'docker-compose-srv.yml' up --build -d
-        #make container_ps
+    - name: Compose fpm
       run: |
         source .env && cd ./.docker
-        docker-compose -f 'docker-compose-fpm.yml' up --build -d
+        make compose-fpm
+        make container_ps
     
-    #- name: Check fpm
-    #  run: sudo docker run --rm fpm bash -c "/var/www/public/index.php"
+    - name: Check fpm
+      run: make check-fpm
 
   # run-srv:
   #   name: Check srv

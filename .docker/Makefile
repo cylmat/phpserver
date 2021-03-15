@@ -10,6 +10,12 @@ compose-srv:
 	docker-compose -f docker-compose-srv.yml up --build -d
 
 ###
+# Check
+###
+check-fpm:
+	docker exec fpm bash -c "php -f '/var/www/shell/check-fpm.php'"
+
+###
 # list
 ###
 image-list:
@@ -20,9 +26,3 @@ container-list:
 
 container_ps:
 	docker container ps -a
-
-###
-# Servers
-###
-check-servers:
-	docker container
