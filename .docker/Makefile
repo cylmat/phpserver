@@ -18,8 +18,8 @@ check-fpm:
 # need fpm running
 check-srv:
 	docker exec apache bash -c "apt-get update && apt-get install -y curl"
-	docker exec apache bash -c "curl localhost:80/check-srv.php"
 	docker exec nginx bash -c "apt-get update && apt-get install -y curl"
+	docker exec apache bash -c "curl localhost:80/check-srv.php"
 	docker exec nginx bash -c "curl localhost:80/check-srv.php"
 
 ###
