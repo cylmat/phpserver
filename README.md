@@ -1,3 +1,5 @@
+[![PhpServer](https://github.com/clymate/phpserver/actions/workflows/main.yml/badge.svg)](https://github.com/clymate/phpserver/actions/workflows/main.yml)
+
 PHP Boilerplate
 ===
 Installation fonctionnelle de l'environnement Php sur Docker

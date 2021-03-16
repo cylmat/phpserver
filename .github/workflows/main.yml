@@ -1,4 +1,4 @@
-name: PhpEnv-Server
+name: PhpServer
 
 on:
   push:
