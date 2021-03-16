@@ -14,7 +14,12 @@ Check::dba("/tmp/test.db4");
 Check::redis();
 Check::mem();
 
-echo "count:" . (Check::getCount()===8 ? '[OK]' : '[failed]');
+if (Check::getCount()===8) {
+    echo "count: [OK]";
+} else {
+    echo "count: [failed]";
+    exit(1);
+}
 
 /**
  * Check data connections
@@ -48,6 +53,7 @@ class Check
             }
         } catch (PDOException $e) {
             echo " $type:".$e->getMessage().PHP_EOL;
+            exit(1);
         }
     }
 
@@ -70,6 +76,7 @@ class Check
             self::$count++;
         } else {
             echo ' ODBC:fail query '.PHP_EOL;
+            exit(1);
         }
         odbc_close($connection);
     }
@@ -91,6 +98,7 @@ class Check
             self::$count++;
         } else {
             echo " DBA:failed \n";
+            exit(1);
         }
         dba_close($dba);
     }
@@ -105,6 +113,7 @@ class Check
             self::$count++;
         } catch(\Exception $e) {
             echo $e->getMessage().PHP_EOL;
+            exit(1);
         }
     }
 
@@ -118,6 +127,7 @@ class Check
             self::$count++;
         } catch(\Exception $e) {
             echo $e->getMessage().PHP_EOL;
+            exit(1);
         }
     }
 }
