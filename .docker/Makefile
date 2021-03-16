@@ -19,8 +19,8 @@ compose-srv:
 # Check
 ###
 check-db:
-	docker exec fpm bash -c "php -f '/var/www/shell/check-db.php'"
 	docker logs --tail 1000 -f mysql
+	docker exec fpm bash -c "php -f '/var/www/shell/check-db.php'"
 
 check-fpm:
 	docker exec fpm bash -c "php -f '/var/www/shell/check-fpm.php'"
