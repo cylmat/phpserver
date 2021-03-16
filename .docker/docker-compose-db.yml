@@ -1,0 +1,101 @@
+version: '3'
+
+services: 
+    #############
+    # DATABASES
+    #############
+    mysql:
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass
+            MYSQL_DATABASE: mydb
+        command: "--innodb_use_native_aio=0"
+        volumes:
+            - ${DIRECTORY}/.docker/config/db/mysql/:/etc/mysql/:ro
+            - ${DIRECTORY}/.data/mysql:/var/lib/mysql
+        ports:
+            - 3306:3306
+        networks: 
+            - phpenv
+            
+    mariadb:
+        image: mariadb:10.0
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass
+            MYSQL_DATABASE: madb
+        ports: 
+            - 3307:3306
+        command: "--innodb_use_native_aio=0"
+        volumes:
+            - ${DIRECTORY}/.docker/config/db/maria/:/etc/mysql/
+            - ${DIRECTORY}/.data/maria/:/var/lib/mysql
+        networks:
+            - phpenv
+
+    postgres:
+        image: postgres:12.4
+        restart: always
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: pass
+            POSTGRES_DB: pgdb
+        ports:
+            - 5432:5432
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        networks:
+            - phpenv
+
+    # mongodb:
+    #     image: mongo:3.0.15
+    #     labels:
+    #         - "traefik.enable=false"
+    #     environment:
+    #         MONGO_INITDB_ROOT_USERNAME: 'root'
+    #         MONGO_INITDB_ROOT_PASSWORD: 'root'
+    #         MONGO_INITDB_DATABASE : 'mongo'
+    #     volumes:
+    #         - ./mongo/data/db:/data/db
+    #         - ./mongo/mongod.conf:/etc/mongod.conf
+    #         - ./mongo/files/init.js:/docker-entrypoint-initdb.d/init.js:ro
+    #     command: [--config /etc/mongod.conf]
+    #     networks:
+    #         - phpenv
+
+    redis:
+        image: redis:6.0  
+        restart: always
+        ports:
+            - 6379:6379
+        volumes: 
+            - ${DIRECTORY}/.docker/config/db/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+            - ${DIRECTORY}/.data/redis/:/data/
+        networks:
+            - phpenv
+    
+    memcached:
+        image: memcached:1.6
+        restart: always
+        ports:
+            - 11211:11211
+        networks:
+            - phpenv
+
+networks: 
+    phpenv:
+
+volumes:
+    pgdata:
+
+###
+# Tuner
+# https://github.com/major/MySQLTuner-perl
+#
+# Data
+# https://min.io

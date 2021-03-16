@@ -1,0 +1,43 @@
+name: PhpServer
+
+on:
+  push:
+    branches: [ main, dev, docker-test ]
+  pull_request:
+    branches: [ main, dev, docker-test ]
+
+jobs:
+  run-fpm:
+    name: Check fpm
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: clymate/docker-action@v1
+
+    - name: Compose fpm
+      run: |
+        source .env && cd .docker
+        make compose-fpm
+        make container-ps
+    
+    - name: Check fpm
+      run: cd .docker && make check-fpm
+
+  run-srv:
+    name: Check servers
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: clymate/docker-action@v1
+
+    - name: Compose srv
+      run: |
+        source .env && cd .docker
+        make compose-fpm
+        make compose-srv
+        make container-ps
+    
+    - name: Check srv
+      run: cd .docker && make check-srv
