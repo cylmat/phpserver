@@ -7,14 +7,18 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Install
 RUN apt-get update && BUILD=1
 RUN apt-get install -y libzip4 libzip-dev lbzip2 zlib1g-dev libicu-dev libxml2-dev
-RUN apt-get install -y apt-utils curl gnupg gnupg2 bzip2 sqlite3 vim netcat wget g++ zip
+RUN apt-get install -y apt-utils bzip2 curl gnupg gnupg2 netcat wget g++ vim zip
 
 # php 7.4 ext
-RUN apt-get install -y php7.4-dev php7.4-mysql php7.4-redis php7.4-intl php7.4-memcached php7.4-soap php7.4-pgsql php7.4-sqlite 
+RUN apt-get install -y php7.4-apcu php7.4-dev php7.4-ds php7.4-intl php7.4-mbstring php7.4-mcrypt php7.4-psr php7.4-soap
 
 ###################################
 #             DATABASES           #
 ###################################
+
+# db
+RUN apt-get install -y sqlite3 php7.4-mysql php7.4-pgsql php7.4-sqlite
+RUN apt-get install -y php7.4-memcached php7.4-mongodb php7.4-redis
 
 # DBA BERKELEY
 RUN apt-get install -y php7.4-dba
@@ -37,13 +41,14 @@ RUN echo 'yes' | pecl install redis-5.3.1
 # Coverage & profiling #
 ########################
 
+RUN apt-get install -y php7.4-pcov php7.4-phpdbg php7.4-xdebug
+
 # Coverage
-# RUN apt-get install -y php7.4-xdebug php7.4-phpdbg
 # RUN pecl install pcov
 
 # XHPROF (tideways)
 # WORKDIR /tmp
-# RUN apt-get install -y graphviz
+RUN apt-get install -y graphviz php7.4-tideways
 # RUN wget https://github.com/tideways/php-xhprof-extension/archive/master.zip && unzip master.zip && rm master.zip
 # WORKDIR /tmp/php-xhprof-extension-master 
 # RUN phpize && ./configure

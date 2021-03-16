@@ -4,6 +4,9 @@ SHELL := /bin/bash
 # Compose
 ###
 compose-fpm:
+	docker-compose -f docker-compose-db.yml --env ../.env up --build -d
+
+compose-fpm:
 	docker-compose -f docker-compose-fpm.yml --env ../.env up --build -d
 
 compose-srv:
@@ -12,6 +15,9 @@ compose-srv:
 ###
 # Check
 ###
+check-db:
+	docker exec fpm bash -c "php -f '/var/www/shell/check-db.php'"
+
 check-fpm:
 	docker exec fpm bash -c "php -f '/var/www/shell/check-fpm.php'"
 
