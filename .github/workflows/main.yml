@@ -2,9 +2,9 @@ name: PhpServer
 
 on:
   push:
-    branches: [ main, dev, docker-test ]
+    branches: [ main, dev ]
   pull_request:
-    branches: [ main, dev, docker-test ]
+    branches: [ main, dev ]
 
 jobs:
   run-fpm:
