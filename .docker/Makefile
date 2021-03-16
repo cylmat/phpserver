@@ -3,7 +3,7 @@ SHELL := /bin/bash
 ###
 # Compose
 ###
-compose-fpm:
+compose-db:
 	docker-compose -f docker-compose-db.yml --env ../.env up --build -d
 
 compose-fpm:
