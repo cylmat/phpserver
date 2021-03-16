@@ -9,6 +9,9 @@ compose-db:
 compose-fpm:
 	docker-compose -f docker-compose-fpm.yml --env ../.env up --build -d
 
+compose-proxy:
+	docker-compose -f docker-compose-proxy.yml --env ../.env up --build -d
+
 compose-srv:
 	docker-compose -f docker-compose-srv.yml --env ../.env up --build -d
 
@@ -17,9 +20,13 @@ compose-srv:
 ###
 check-db:
 	docker exec fpm bash -c "php -f '/var/www/shell/check-db.php'"
+	docker logs --tail 1000 -f mysql
 
 check-fpm:
 	docker exec fpm bash -c "php -f '/var/www/shell/check-fpm.php'"
+
+check-proxy:
+	docker exec fpm bash -c "php -f '/var/www/shell/check-proxy.php'"
 
 # need fpm running
 check-srv:

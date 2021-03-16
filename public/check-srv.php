@@ -9,5 +9,3 @@ if (strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'apache') !== false) {
 } else {
     exit(1);
 }
-
-
