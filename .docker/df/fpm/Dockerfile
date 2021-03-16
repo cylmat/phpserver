@@ -10,7 +10,7 @@ RUN apt-get install -y libzip4 libzip-dev lbzip2 zlib1g-dev libicu-dev libxml2-d
 RUN apt-get install -y apt-utils bzip2 curl gnupg gnupg2 netcat wget g++ vim zip
 
 # php 7.4 ext
-RUN apt-get install -y php7.4-apcu php7.4-dev php7.4-ds php7.4-intl php7.4-mbstring php7.4-mcrypt php7.4-psr php7.4-soap
+RUN apt-get install -y php7.4-amqp php7.4-apcu php7.4-dev php7.4-ds php7.4-intl php7.4-mbstring php7.4-mcrypt php7.4-psr php7.4-soap
 
 ###################################
 #             DATABASES           #
