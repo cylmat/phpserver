@@ -33,7 +33,8 @@ services:
             MYSQL_DATABASE: madb
         ports: 
             - 3307:3306
-        command: "--innodb_use_native_aio=0"
+        # for windows users
+        #command: "--innodb_use_native_aio=0"
         volumes:
             - ${DIRECTORY}/.docker/config/db/maria/:/etc/mysql/
             - ${DIRECTORY}/.data/maria/:/var/lib/mysql
