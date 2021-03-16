@@ -26,7 +26,8 @@ check-fpm:
 	docker exec fpm bash -c "php -f '/var/www/shell/check-fpm.php'"
 
 check-proxy:
-	docker exec fpm bash -c "php -f '/var/www/shell/check-proxy.php'"
+	docker exec haproxy bash -c "apt-get update && apt-get install -y curl"
+	docker exec haproxy bash -c "curl localhost:80/check-proxy.php"
 
 # need fpm running
 check-srv:
