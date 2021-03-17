@@ -22,10 +22,57 @@
 
 # https://dev.mysql.com/doc/refman/5.7/en/mysql-command-options.html
 
-[mysqld]
-skip-host-cache
-skip-name-resolve
-bind-address = *
 
-#!includedir /etc/mysql/conf.d/
-#!includedir /etc/mysql/mysql.conf.d/
+[mysql]
+port=3306
+#socket=/tmp/mysql.sock
+auto_rehash
+connect_timeout=2
+#auto_vertical_output
+#column_names 
+#column_type_info
+compress
+line_numbers #on errors
+ignore_spaces # build-in reserved words
+init_command=SET NAMES utf8mb4
+
+#protocol=TCP
+#quick # -q no cache or history
+reconnect
+skip_reconnect # avoid error between queries (tem tables, etc...)
+show_warnings
+#histignore="*SHOW*:*SET*"
+#unbuffered
+
+max_allowed_packet=16M #client-server 
+syslog # -j
+table #default, can be add for batch mode
+# tee=output_filename
+tls_version=TLSv1.2 
+#wait
+#vertical
+pager=more
+
+# SSL
+# https://dev.mysql.com/doc/refman/5.7/en/connection-options.html#encrypted-connection-options
+ssl_ca=/var/lib/mysql/ca.pem
+ssl_cert=/var/lib/mysql/client-cert.pem
+ssl_key=/var/lib/mysql/client-key.pem
+
+######output
+# raw # -r not escaping special chars
+# batch # -b use tab output format and escaping of special characters
+# silent # -s less output
+#html
+#xml
+# CAREFUL UPDATE AND INSERT with no key, AND SELECT with lots results
+# select_limit=value
+skip_safe_updates
+# one_database => ignore 'database'.'table' statements
+[mysqld-5.7]
+sql_mode=TRADITIONAL
+
+
+
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mysql.conf.d/
