@@ -15,7 +15,7 @@ services:
             MYSQL_DATABASE: mydb
         # For Windows users
         #command: "--innodb_use_native_aio=0"
-        volumes:
+        #volumes:
             #- ${DIRECTORY}/.docker/config/db/mysql/:/etc/mysql/:ro
             #- mysql:/var/lib/mysql
         #    - ${DIRECTORY}/.data/mysql:/var/lib/mysql
