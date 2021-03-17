@@ -9,8 +9,9 @@ if (defined('SQL')) {
     Check::pdo('maria', 'mysql:host=maria;port=3306;dbname=madb');
     Check::pdo('mysql', 'mysql:host=mysql;port=3306;dbname=mydb');
     Check::pdo('postg', 'pgsql:host=postgres;port=5432;dbname=pgdb');
-    // Php ext for MySql
-    Check::odbc("DRIVER={MySQL ODBC 8.0 Unicode Driver};Server=mysql;Database=mydb;Port=3306;String Types=Unicode");
+
+    // Php ext for MySql Odbc
+    // Check::odbc("DRIVER={MySQL ODBC 8.0 Unicode Driver};Server=mysql;Database=mydb;Port=3306;String Types=Unicode");
 }
 
 // PDO
@@ -63,30 +64,6 @@ class Check
         }
     }
 
-    static function odbc(string $dsn)
-    {
-        $table = "odbc";
-
-        // odbc mysql
-        $connection = odbc_connect($dsn, $_SERVER['DB_USER'], $_SERVER['DB_PASS']);
-        if (!$connection) {
-            echo ' ODBC fail connection ' . PHP_EOL;
-            return;
-        }
-        odbc_exec($connection, "CREATE TABLE IF NOT EXISTS $table (id INT, my VARCHAR(20))");
-        odbc_exec($connection, "TRUNCATE TABLE $table;");
-        odbc_exec($connection, "INSERT INTO $table (id, my) VALUES (21, 'ok') ON DUPLICATE KEY UPDATE id=id");
-        $res = odbc_exec($connection, "SELECT * FROM $table WHERE id=21");
-        odbc_fetch_row($res, 0);
-        if ($r = odbc_result($res, 'my')) {
-            echo "odbc:$r\n";
-            self::$count++;
-        } else {
-            echo ' ODBC:fail query ' . PHP_EOL;
-        }
-        odbc_close($connection);
-    }
-
     /**
      * CACHE K-V
      */
@@ -133,4 +110,31 @@ class Check
             echo $e->getMessage() . PHP_EOL;
         }
     }
+
+    /**
+     * Uncomment to test Odbc
+     */
+    /*static function odbc(string $dsn)
+    {
+        $table = "odbc";
+
+        // odbc mysql
+        $connection = odbc_connect($dsn, $_SERVER['DB_USER'], $_SERVER['DB_PASS']);
+        if (!$connection) {
+            echo ' ODBC fail connection ' . PHP_EOL;
+            return;
+        }
+        odbc_exec($connection, "CREATE TABLE IF NOT EXISTS $table (id INT, my VARCHAR(20))");
+        odbc_exec($connection, "TRUNCATE TABLE $table;");
+        odbc_exec($connection, "INSERT INTO $table (id, my) VALUES (21, 'ok') ON DUPLICATE KEY UPDATE id=id");
+        $res = odbc_exec($connection, "SELECT * FROM $table WHERE id=21");
+        odbc_fetch_row($res, 0);
+        if ($r = odbc_result($res, 'my')) {
+            echo "odbc:$r\n";
+            self::$count++;
+        } else {
+            echo ' ODBC:fail query ' . PHP_EOL;
+        }
+        odbc_close($connection);
+    }*/
 }
