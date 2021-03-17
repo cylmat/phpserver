@@ -19,7 +19,7 @@ compose-srv:
 # Check
 ###
 check-db:
-	docker logs -f mysql --tail 1000
+	#docker logs -f mysql --tail 1000
 	docker exec fpm bash -c "php -f '/var/www/shell/check-db.php'"
 
 check-fpm:
