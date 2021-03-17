@@ -60,7 +60,7 @@ class Check
             }
         } catch (PDOException $e) {
             echo " $type:" . $e->getMessage() . PHP_EOL;
-            exit(1);
+            //exit(1);
         }
     }
 
@@ -83,7 +83,7 @@ class Check
             self::$count++;
         } else {
             echo ' ODBC:fail query ' . PHP_EOL;
-            exit(1);
+            //exit(1);
         }
         odbc_close($connection);
     }
