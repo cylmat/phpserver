@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+    #################
+    # PROXY - CACHE #
+    #################
+    haproxy:
+        image: haproxy:2.2
+        restart: always
+        ports:
+            - 8010:80
+            - 51510:51510
+        volumes:
+            - ${DIRECTORY}/.docker/config/proxy/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg
+        networks:
+            - phpenv
+
+    varnish: 
+        image: varnish:6.0
+        restart: always
+        ports:
+            - 8011:80
+        volumes:
+            - ${DIRECTORY}/.docker/config/proxy/varnish:/etc/varnish/
+        networks:
+            - phpenv
+
+networks: 
+    phpenv:

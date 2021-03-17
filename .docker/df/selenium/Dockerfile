@@ -84,8 +84,8 @@ USER root
 #====================================
 # Scripts to run Selenium Standalone
 #====================================
-COPY entry_point.sh /opt/bin/entry_point.sh
-RUN chmod +x /opt/bin/entry_point.sh
+COPY entry_point.sh /opt/bin/entrypoint.sh
+RUN chmod +x /opt/bin/entrypoint.sh
 
 # phantomjs will write its log here
 RUN mkdir -p /var/log/selenium && chmod a+w /var/log/selenium
@@ -94,7 +94,7 @@ USER seluser
 
 EXPOSE 4444
 
-CMD ["/opt/bin/entry_point.sh"]
+CMD ["/opt/bin/entrypoint.sh"]
 
 
 

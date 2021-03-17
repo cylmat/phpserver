@@ -1,0 +1,55 @@
+version: '3'
+
+services: 
+    ###########
+    # PHP-FPM # 
+    ###########
+    fpm: 
+        build: ./df/fpm
+        restart: always
+        container_name: fpm
+        ports: 
+            - 9000:9000
+        environment:
+            - DB_USER=user
+            - DB_PASS=pass
+        volumes:
+            - ${DIRECTORY}:/var/www/
+            # cli
+            - ${DIRECTORY}.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/cli/php.ini:ro
+            - ${DIRECTORY}.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/cli/conf.d/
+            # fpm
+            - ${DIRECTORY}.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/fpm/php.ini:ro
+            - ${DIRECTORY}.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/fpm/conf.d/
+            
+            # sqlite
+            - ${DIRECTORY}.data/sqlite/:/sqlite/
+        networks: 
+            - phpenv
+    
+    # SECOND FPM TO TEST LOAD-BALANCING
+    fpm2: 
+        build: ./df/fpm
+        restart: always
+        container_name: fpm2
+        ports: 
+            - 9001:9000
+        environment:
+            - DB_USER=user
+            - DB_PASS=pass
+        volumes:
+            - ${DIRECTORY}:/var/www/
+            # cli
+            - ${DIRECTORY}.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/cli/php.ini:ro
+            - ${DIRECTORY}.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/cli/conf.d/
+            # fpm
+            - ${DIRECTORY}.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/fpm/php.ini:ro
+            - ${DIRECTORY}.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/fpm/conf.d/
+            
+            # sqlite
+            - ${DIRECTORY}.data/sqlite/:/sqlite/
+        networks: 
+            - phpenv
+
+networks: 
+    phpenv:

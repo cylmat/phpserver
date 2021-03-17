@@ -1,0 +1,45 @@
+version: '3'
+
+services: 
+    nginx:
+        image: nginx:1.17
+        container_name: nginx
+        restart: always
+        volumes:
+            - ${DIRECTORY}/.docker/config/srv/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+            - ${DIRECTORY}/.docker/config/srv/nginx/conf.d/:/etc/nginx/conf.d/:ro
+            - ${DIRECTORY}/.docker/config/srv/nginx/snippets:/etc/nginx/snippets:ro
+            - ${DIRECTORY}/public:/app-static
+            - /nginx/data/cache # create directory to use with nginx.conf
+        ports:
+            - 8001:80
+        networks: 
+            - phpenv
+
+    # SECOND SERVER TO TEST LOAD-BALANCING
+    apache:
+        image: httpd:2.4
+        container_name: apache
+        restart: always
+        ports: 
+            - 8002:80
+        volumes:
+            - ${DIRECTORY}/.docker/config/srv/apache/:/usr/local/apache2/conf/:ro
+            - ${DIRECTORY}:/usr/local/apache2/htdocs/
+        networks:
+            - phpenv
+          
+networks: 
+    phpenv:
+
+###
+# Boxes
+# https://devilbox.org
+# https://nanobox.io
+# https://laradock.io/
+# https://github.com/laraedit/laraedit-docker
+# https://laragon.org/
+# https://easyphp.org/
+#
+# Lamp
+# https://hub.docker.com/r/mattrayner/lamp
