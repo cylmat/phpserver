@@ -1,10 +1,15 @@
 <?php
 
-$TOTAL = 8;
+$TOTAL = 6;
+
+// SQL
+if (defined('SQL')) {
+    $TOTAL += 2;
+    Check::pdo('maria', 'mysql:host=maria;port=3306;dbname=madb');
+    Check::pdo('mysql', 'mysql:host=mysql;port=3306;dbname=mydb');
+}
 
 // PDO
-Check::pdo('maria', 'mysql:host=maria;port=3306;dbname=madb');
-Check::pdo('mysql', 'mysql:host=mysql;port=3306;dbname=mydb');
 Check::pdo('postg', 'pgsql:host=postgres;port=5432;dbname=pgdb');
 Check::pdo('sqlit', 'sqlite:/sqlite/sqlite.db3');
 
