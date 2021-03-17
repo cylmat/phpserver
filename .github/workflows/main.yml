@@ -2,9 +2,9 @@ name: PhpServer
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ main, dev, mysql ]
   pull_request:
-    branches: [ main, dev ]
+    branches: [ main, dev, mysql ]
 
 jobs:
   run-fpm:
