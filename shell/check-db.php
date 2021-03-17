@@ -1,7 +1,7 @@
 <?php
 
 // PDO
-#Check::pdo('maria', 'mysql:host=mariadb;port=3306;ddbname=madb');
+Check::pdo('maria', 'mysql:host=maria;port=3306;dbname=madb');
 Check::pdo('mysql', 'mysql:host=mysql;port=3306;dbname=mydb');
 Check::pdo('postg', 'pgsql:host=postgres;port=5432;dbname=pgdb');
 Check::pdo('sqlit', 'sqlite:/sqlite/sqlite.db3');
@@ -14,10 +14,10 @@ Check::dba("/tmp/test.db4");
 Check::redis();
 Check::mem();
 
-if (Check::getCount() === 7) {
-    echo "count: [OK]";
+if (Check::getCount() === 8) {
+    echo "count: [OK]\n";
 } else {
-    echo "count: [failed]";
+    echo "count: [failed]\n";
     exit(1);
 }
 
@@ -106,7 +106,7 @@ class Check
     static function redis()
     {
         try {
-            $redis = new Redis;
+            $redis = new \Redis;
             $redis->connect('redis', 6379);
             $redis->set("key", "redis:ok");
             echo $redis->get("key") . PHP_EOL;
@@ -120,7 +120,7 @@ class Check
     static function mem()
     {
         try {
-            $mc = new Memcached;
+            $mc = new \Memcached;
             $mc->addServer("memcached", 11211);
             $mc->set("test", "memcached:ok");
             echo $mc->get("test") . PHP_EOL;

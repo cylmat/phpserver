@@ -72,7 +72,3 @@ skip_safe_updates
 [mysqld-5.7]
 sql_mode=TRADITIONAL
 
-
-
-!includedir /etc/mysql/conf.d/
-!includedir /etc/mysql/mysql.conf.d/
