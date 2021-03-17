@@ -14,10 +14,10 @@ services:
             MYSQL_PASSWORD: pass
             MYSQL_DATABASE: mydb
         # For Windows users
-        command: "--innodb_use_native_aio=0"
-        volumes:
-            - ${DIRECTORY}/.docker/config/db/mysql:/etc/mysql:ro
-            - ${DIRECTORY}/.data/mysql:/var/lib/mysql
+        #command: "--innodb_use_native_aio=0"
+        #volumes:
+        #    - ${DIRECTORY}/.docker/config/db/mysql:/etc/mysql:ro
+        #    - ${DIRECTORY}/.data/mysql:/var/lib/mysql
         ports:
             - 3306:3306
         networks: 
@@ -35,7 +35,7 @@ services:
         ports: 
             - 3307:3306
         # For windows users
-        command: "--innodb_use_native_aio=0"
+        #command: "--innodb_use_native_aio=0"
         volumes:
             - ${DIRECTORY}/.docker/config/db/maria:/etc/mysql:ro
             - ${DIRECTORY}/.data/maria/:/var/lib/mysql
