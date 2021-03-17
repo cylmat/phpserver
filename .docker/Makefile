@@ -21,8 +21,8 @@ compose-srv:
 check-db:
 	# @todo
 	#docker exec fpm bash -c "php -f '/var/www/shell/check-db.php'"
-
-	docker logs --tail 1000 -f mysql
+#/var/run/mysqld/mysqld.sock
+	#docker logs --tail 1000 -f mysql
 	docker exec mysql bash -c "MYSQL_PWD=pass mysql -A mydb -u user -e 'SHOW TABLES'"
 
 check-fpm:
