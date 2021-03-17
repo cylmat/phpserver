@@ -26,6 +26,7 @@ services:
             
     mariadb:
         image: mariadb:10.0
+        container_name: maria
         restart: always
         environment:
             MYSQL_ROOT_PASSWORD: root

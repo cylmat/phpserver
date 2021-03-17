@@ -1,10 +1,10 @@
 <?php
 
 // PDO
-Check::pdo('maria','mysql:host=mariadb;dbname=madb');
-Check::pdo('mysql','mysql:host=mysql;dbname=mydb');
-Check::pdo('postg','pgsql:host=postgres;port=5432;dbname=pgdb');
-Check::pdo('sqlit','sqlite:/sqlite/sqlite.db3');
+#Check::pdo('maria', 'mysql:host=mariadb;port=3306;ddbname=madb');
+Check::pdo('mysql', 'mysql:host=mysql;port=3306;dbname=mydb');
+Check::pdo('postg', 'pgsql:host=postgres;port=5432;dbname=pgdb');
+Check::pdo('sqlit', 'sqlite:/sqlite/sqlite.db3');
 
 // Php ext for MySql
 Check::odbc("DRIVER={MySQL ODBC 8.0 Unicode Driver};Server=mysql;Database=mydb;Port=3306;String Types=Unicode");
@@ -14,7 +14,7 @@ Check::dba("/tmp/test.db4");
 Check::redis();
 Check::mem();
 
-if (Check::getCount()===8) {
+if (Check::getCount() === 7) {
     echo "count: [OK]";
 } else {
     echo "count: [failed]";
@@ -44,15 +44,15 @@ class Check
             $pdo->exec("DELETE FROM $table;");
             $pdo->exec("INSERT INTO $table (id, my) VALUES (96, 'ok')");
             $r = $pdo->query("SELECT * FROM $table");
-            if(is_array($res = $r->fetch())) {
-                echo $type.':'.$res['my'] . PHP_EOL;
+            if (is_array($res = $r->fetch())) {
+                echo $type . ':' . $res['my'] . PHP_EOL;
                 self::$count++;
             } else {
                 var_dump($r->errorInfo()[2]);
                 throw new PDOException("Query $type empty");
             }
         } catch (PDOException $e) {
-            echo " $type:".$e->getMessage().PHP_EOL;
+            echo " $type:" . $e->getMessage() . PHP_EOL;
             exit(1);
         }
     }
@@ -63,19 +63,19 @@ class Check
 
         // odbc mysql
         $connection = odbc_connect($dsn, $_SERVER['DB_USER'], $_SERVER['DB_PASS']);
-        if(!$connection) {
-            echo ' ODBC fail connection '.PHP_EOL;
+        if (!$connection) {
+            echo ' ODBC fail connection ' . PHP_EOL;
         }
         odbc_exec($connection, "CREATE TABLE IF NOT EXISTS $table (id INT, my VARCHAR(20))");
         odbc_exec($connection, "TRUNCATE TABLE $table;");
         odbc_exec($connection, "INSERT INTO $table (id, my) VALUES (21, 'ok') ON DUPLICATE KEY UPDATE id=id");
         $res = odbc_exec($connection, "SELECT * FROM $table WHERE id=21");
-        odbc_fetch_row ($res, 0);
-        if($r = odbc_result($res, 'my')) {
+        odbc_fetch_row($res, 0);
+        if ($r = odbc_result($res, 'my')) {
             echo "odbc:$r\n";
             self::$count++;
         } else {
-            echo ' ODBC:fail query '.PHP_EOL;
+            echo ' ODBC:fail query ' . PHP_EOL;
             exit(1);
         }
         odbc_close($connection);
@@ -91,7 +91,7 @@ class Check
         if (!$dba) {
             echo " dba_open failed \n";
         }
-        dba_replace("key", "dba:ok".PHP_EOL, $dba);
+        dba_replace("key", "dba:ok" . PHP_EOL, $dba);
         if (dba_exists("key", $dba)) {
             echo dba_fetch("key", $dba);
             dba_delete("key", $dba);
@@ -105,14 +105,14 @@ class Check
 
     static function redis()
     {
-        try { 
+        try {
             $redis = new Redis;
             $redis->connect('redis', 6379);
             $redis->set("key", "redis:ok");
-            echo $redis->get("key").PHP_EOL;
+            echo $redis->get("key") . PHP_EOL;
             self::$count++;
-        } catch(\Exception $e) {
-            echo $e->getMessage().PHP_EOL;
+        } catch (\Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
             exit(1);
         }
     }
@@ -120,13 +120,13 @@ class Check
     static function mem()
     {
         try {
-            $mc = new Memcached; 
-            $mc->addServer("memcached", 11211); 
-            $mc->set("test", "memcached:ok"); 
-            echo $mc->get("test").PHP_EOL;
+            $mc = new Memcached;
+            $mc->addServer("memcached", 11211);
+            $mc->set("test", "memcached:ok");
+            echo $mc->get("test") . PHP_EOL;
             self::$count++;
-        } catch(\Exception $e) {
-            echo $e->getMessage().PHP_EOL;
+        } catch (\Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
             exit(1);
         }
     }
