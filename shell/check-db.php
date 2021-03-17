@@ -1,5 +1,7 @@
 <?php
 
+$TOTAL = 8;
+
 // PDO
 Check::pdo('maria', 'mysql:host=maria;port=3306;dbname=madb');
 Check::pdo('mysql', 'mysql:host=mysql;port=3306;dbname=mydb');
@@ -14,10 +16,10 @@ Check::dba("/tmp/test.db4");
 Check::redis();
 Check::mem();
 
-if (Check::getCount() === 8) {
-    echo "count: [OK]\n";
+if ($TOTAL === $a = Check::getCount()) {
+    echo "count: $a/$TOTAL [OK]\n";
 } else {
-    echo "count: [failed]\n";
+    echo "count: $a/$TOTAL [failed]\n";
     exit(1);
 }
 

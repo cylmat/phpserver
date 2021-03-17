@@ -2,9 +2,9 @@ name: PhpServer
 
 on:
   push:
-    branches: [ main, dev, mysql ]
+    branches: [ main, dev ]
   pull_request:
-    branches: [ main, dev, mysql ]
+    branches: [ main, dev ]
 
 jobs:
   run-fpm:
@@ -42,19 +42,5 @@ jobs:
     - name: Check srv
       run: cd .docker && make check-srv
 
-  run-db:
-    name: Check databases
-    runs-on: ubuntu-18.04
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: clymate/docker-action@v1
-
-    - name: Compose db
-      run: |
-        source .env && cd .docker
-        make compose-db
-        make container-ps
-    
-    - name: Check db
-      run: cd .docker && make check-db
+  # @todo
+  #run-db:
