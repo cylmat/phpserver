@@ -36,9 +36,9 @@ services:
             - 3307:3306
         # for windows users
         #command: "--innodb_use_native_aio=0"
-        volumes:
-            - ${DIRECTORY}/.docker/config/db/maria/:/etc/mysql/
-            - ${DIRECTORY}/.data/maria/:/var/lib/mysql
+        # volumes:
+        #     - ${DIRECTORY}/.docker/config/db/maria/:/etc/mysql/
+        #     - ${DIRECTORY}/.data/maria/:/var/lib/mysql
         networks:
             - phpenv
 
