@@ -57,5 +57,5 @@ jobs:
         make compose-db
         make container-ps
     
-    - name: Check srv
+    - name: Check db
       run: cd .docker && make check-db
