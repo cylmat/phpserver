@@ -42,5 +42,20 @@ jobs:
     - name: Check srv
       run: cd .docker && make check-srv
 
-  # @todo
-  #run-db:
+  run-db:
+    name: Check databases
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: clymate/docker-action@v1
+
+    - name: Compose db without sql
+      run: |
+        source .env && cd .docker
+        make compose-fpm
+        make compose-db
+        make container-ps
+    
+    - name: Check srv
+      run: cd .docker && make check-db

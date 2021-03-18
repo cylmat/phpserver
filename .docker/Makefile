@@ -18,6 +18,9 @@ compose-srv:
 ###
 # Check
 ###
+check-dbsql:
+	docker exec fpm bash -c "php -f '/var/www/shell/check-dbsql.php'"
+
 check-db:
 	docker exec fpm bash -c "php -f '/var/www/shell/check-db.php'"
 
