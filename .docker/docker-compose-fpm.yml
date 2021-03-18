@@ -1,11 +1,13 @@
-version: '3'
+version: '3.4'
 
 services: 
     ###########
     # PHP-FPM # 
     ###########
     fpm: 
-        build: ./df/fpm
+        build: 
+            context: ./df/fpm
+            target: SMALL
         restart: always
         container_name: fpm
         ports: 
@@ -26,10 +28,25 @@ services:
             - ${DIRECTORY}.data/sqlite/:/sqlite/
         networks: 
             - phpenv
+
+    rabbitmq:
+        image: rabbitmq:3.8
+        hostname: rabbitmq
+        environment:
+            RABBITMQ_DEFAULT_USER: user
+            RABBITMQ_DEFAULT_PASS: password
+        ports:
+            - 5672:5672
+            - 56720:8080
+            - 15672:15672
+        networks: 
+            - phpenv
     
-    # SECOND FPM TO TEST LOAD-BALANCING
+    # SECOND FPM TO USE LOAD-BALANCING
     fpm2: 
-        build: ./df/fpm
+        build: 
+            context: ./df/fpm
+            target: SMALL
         restart: always
         container_name: fpm2
         ports: 

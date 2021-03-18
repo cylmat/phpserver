@@ -1,5 +1,6 @@
 ARG BUILD=full
-FROM phpdockerio/php74-fpm:latest AS PHP74FPM
+
+FROM phpdockerio/php74-fpm:latest AS SMALL
 # Ubuntu (debian) 20.04 LTS (Focal Fossa)
 
 # Fix debconf warnings upon build
@@ -12,8 +13,11 @@ RUN apt-get install -y apt-utils bzip2 curl gnupg gnupg2 netcat wget g++ vim zip
 
 # Php 7.4 ext
 RUN apt-get install -y php7.4-apcu php7.4-dev php7.4-ds php7.4-intl php7.4-mbstring php7.4-mcrypt php7.4-psr php7.4-soap
+
 # Amqp
-RUN apt-get install -y php7.4-amqp
+RUN apt-get install -y php7.4-amqp libczmq4 php7.4-zmq
+
+FROM SMALL AS FULL
 
 ###################################
 #             DATABASES           #
