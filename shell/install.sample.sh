@@ -28,6 +28,19 @@ echo '4' | dpkg --install mysql-apt-config_0.8.15-1_all.deb
 apt-get update
 apt-get --yes install mysql-server
 
+########
+# ODBC #
+########
+# /etc/odbc.ini not needed
+# config in /etc/odbcinst.ini
+# WORKDIR /tmp
+# RUN apt-get install -y odbcinst1debian2 libodbc1
+# RUN wget https://dev.mysql.com/get/Downloads/Connector-ODBC/8.0/mysql-connector-odbc_8.0.21-1ubuntu20.04_amd64.deb
+# RUN md5sum mysql-connector-odbc_8.0.21-1ubuntu20.04_amd64.deb
+# RUN test "$(md5sum mysql-connector-odbc_8.0.21-1ubuntu20.04_amd64.deb)" = "62e280b8d8e5d3531c6de2b57c37b1a5  mysql-connector-odbc_8.0.21-1ubuntu20.04_amd64.deb"
+# RUN dpkg -i mysql-connector-odbc_8.0.21-1ubuntu20.04_amd64.deb 
+# RUN apt-get install -y php7.4-odbc
+
 #############
 # Rabbitmq with erlang 22
 #############
@@ -50,3 +63,13 @@ apt-get install -y postgresql-11 postgresql-server-dev-11
 # PGadmin
 sed -ie "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/11/main/postgresql.conf
 sed -ie "s#127.0.0.1/32#0.0.0.0/0#" /etc/postgresql/11/main/pg_hba.conf
+
+##########
+# XHPROF #
+##########
+# WORKDIR /tmp
+# RUN wget https://github.com/tideways/php-xhprof-extension/archive/master.zip && unzip master.zip && rm master.zip
+# WORKDIR /tmp/php-xhprof-extension-master 
+# RUN phpize && ./configure
+# RUN make && make install
+# RUN echo "extension=tideways_xhprof.so" > /etc/php/7.4/fpm/conf.d/xhprof.ini
