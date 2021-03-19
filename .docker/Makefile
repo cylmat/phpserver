@@ -27,6 +27,10 @@ check-db:
 check-fpm:
 	docker exec fpm bash -c "php -f '/var/www/shell/check-fpm.php'"
 
+check-mq:
+	docker exec -e SERVER=1 fpm bash -c "php -f '/var/www/shell/check-mq.php' &"
+	docker exec fpm bash -c "php -f '/var/www/shell/check-mq.php'"
+
 check-proxy:
 	docker exec haproxy bash -c "apt-get update && apt-get install -y curl"
 	docker exec haproxy bash -c "curl localhost:80/check-proxy.php"

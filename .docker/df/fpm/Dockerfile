@@ -1,4 +1,8 @@
-ARG BUILD=full
+ARG BUILD=FULL
+
+###############
+# SMALL IMAGE #
+###############
 
 FROM phpdockerio/php74-fpm:latest AS SMALL
 # Ubuntu (debian) 20.04 LTS (Focal Fossa)
@@ -12,20 +16,26 @@ RUN apt-get install -y libzip4 libzip-dev lbzip2 zlib1g-dev libicu-dev libxml2-d
 RUN apt-get install -y apt-utils bzip2 curl gnupg gnupg2 netcat wget g++ vim zip
 
 # Php 7.4 ext
-RUN apt-get install -y php7.4-apcu php7.4-dev php7.4-ds php7.4-intl php7.4-mbstring php7.4-mcrypt php7.4-psr php7.4-soap
+RUN apt-get install -y php7.4-apcu php7.4-dev php7.4-ds php7.4-intl php7.4-mbstring php7.4-mcrypt php7.4-psr
+
+# Sqlite
+RUN apt-get install -y sqlite3 php7.4-sqlite
 
 # Amqp
 RUN apt-get install -y php7.4-amqp libczmq4 php7.4-zmq
 
+##############
+# FULL IMAGE #
+##############
+
 FROM SMALL AS FULL
 
-###################################
-#             DATABASES           #
-###################################
+#############
+# Databases #
+#############
 
 # Db
-RUN apt-get install -y sqlite3 php7.4-mysql php7.4-pgsql php7.4-sqlite
-RUN apt-get install -y php7.4-memcached php7.4-mongodb php7.4-redis
+RUN apt-get install -y php7.4-mysql php7.4-pgsql php7.4-memcached php7.4-mongodb php7.4-redis
 
 # Php-Redis: https://github.com/phpredis/phpredis/
 RUN echo 'yes' | pecl install redis-5.3.1
@@ -44,8 +54,14 @@ RUN apt-get install -y php7.4-dba
 # RUN dpkg -i mysql-connector-odbc_8.0.21-1ubuntu20.04_amd64.deb 
 # RUN apt-get install -y php7.4-odbc
 
+##############
+# Useful EXT #
+##############
+
+RUN apt-get install -y php7.4-soap
+
 ########################
-# Coverage & profiling #
+# Coverage & Profiling #
 ########################
 
 RUN apt-get install -y php7.4-pcov php7.4-phpdbg php7.4-xdebug
