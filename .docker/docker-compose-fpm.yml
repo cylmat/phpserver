@@ -7,7 +7,7 @@ services:
     fpm: 
         build: 
             context: ./df/fpm
-            target: SMALL
+            #target: FULL
         restart: always
         container_name: fpm
         ports: 
@@ -33,7 +33,7 @@ services:
     fpm2: 
         build: 
             context: ./df/fpm
-            target: SMALL
+            #target: FULL
         restart: always
         container_name: fpm2
         ports: 
