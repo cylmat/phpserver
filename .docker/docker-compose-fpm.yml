@@ -28,19 +28,6 @@ services:
             - ${DIRECTORY}.data/sqlite/:/sqlite/
         networks: 
             - phpenv
-
-    rabbitmq:
-        image: rabbitmq:3.8
-        hostname: rabbitmq
-        environment:
-            RABBITMQ_DEFAULT_USER: user
-            RABBITMQ_DEFAULT_PASS: password
-        ports:
-            - 5672:5672
-            - 56720:8080
-            - 15672:15672
-        networks: 
-            - phpenv
     
     # SECOND FPM TO USE LOAD-BALANCING
     fpm2: 
