@@ -57,9 +57,6 @@ RUN apt-get install -y php7.4-soap
 
 RUN apt-get install -y php7.4-pcov php7.4-phpdbg php7.4-xdebug
 
-# Coverage
-# RUN pecl install pcov
-
 # XHPROF (tideways)
 RUN apt-get install -y graphviz php7.4-tideways
 
