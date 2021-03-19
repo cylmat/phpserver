@@ -67,7 +67,7 @@ class Check
     /**
      * CACHE K-V
      */
-    static function dba(string $file) // Berkeley
+    static function dba(string $file) // Berkeley abstraction
     {
         // dba_handlers() => cdb, cdb_make, db4, inifile, flatfile, qdbm, lmdb
         $dba = dba_open($file, "n", "db4"); //n: rwc

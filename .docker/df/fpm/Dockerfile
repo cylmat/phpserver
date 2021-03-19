@@ -42,7 +42,7 @@ RUN apt-get install -y libmemcached-dev memcached php7.4-memcached
 RUN pecl channel-update pecl.php.net
 RUN echo 'yes' | pecl install redis-5.3.1
 
-# DBA BERKELEY
+# DBA Berkeley abstraction
 RUN apt-get install -y php7.4-dba
 
 ##############
