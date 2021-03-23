@@ -2,34 +2,36 @@
 
 PHP Boilerplate
 ===
-Functional installation of Php environment on Docker
+Functional installation of Php environment on [Docker](https://www.docker.com)
 
 Databases
 ---------
-* DBA ext
-* MariaDb 10.0
-* Memcached 1.6
-* Mysql 5.7
-* PostgreSql 12.4
-* Redis 6.0
-* SQlite 3
+* [DBA Php ext](https://www.oracle.com/database/berkeley-db/db.html)
+* [MariaDb 10.0](https://mariadb.org)
+* [Memcached 1.6](https://memcached.org)
+* [Mysql 5.7](https://www.mysql.com)
+* [PostgreSql 12.4](https://www.postgresql.org)
+* [Redis 6.0](https://redis.io)
+* [SQlite 3](https://www.sqlite.org)
 
 Messages
 --------
-* Rabbitmq 3.8
-* ZeroMq ext
+* [Rabbitmq 3.8](https://www.rabbitmq.com)
+* [ZeroMq ext](https://zeromq.org)
 
 Servers
 -------
-* Apache 2.4
-* Nginx 1.17
-* Php-fpm 7.4
+* [Apache 2.4](https://httpd.apache.org)
+* [Nginx 1.17](https://www.nginx.com)
+* [Php-fpm 7.4](https://www.php.net/manual/fr/install.fpm.php)
 
-## Proxies
-* HAProxy 2.2
-* Varnish 6.0
+Proxies
+-------
+* [HAProxy 2.2](http://www.haproxy.org)
+* [Varnish 6.0](https://varnish-cache.org)
 
-## Sample structure
+Sample structure
+----------------
                USER
                 |
             Virtual IP
@@ -39,3 +41,6 @@ Servers
     |  Varnish1 - Varnish2   |
     |     |           |      |
      -> Server 1, 2, 3 ... <-
+
+#### Ref
+* [cylmat/phpconfig](https://github.com/cylmat/phpconfig/)
