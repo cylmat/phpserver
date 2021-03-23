@@ -3,8 +3,6 @@ name: PhpServer
 on:
   push:
     branches: [ main, dev ]
-  pull_request:
-    branches: [ main, dev ]
 
 jobs:
   run-fpm:
@@ -48,7 +46,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: clymate/docker-action@v1
+    - uses: cylmat/docker-action@v1
 
     - name: Compose db without sql
       run: |
