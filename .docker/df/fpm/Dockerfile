@@ -35,6 +35,9 @@ RUN apt-get install -y php7.4-amqp libczmq4 php7.4-zmq
 
 FROM SMALL AS FULL
 
+# Common
+RUN apt-get install -y build-essential busybox software-properties-common
+
 #############
 # Databases #
 #############
