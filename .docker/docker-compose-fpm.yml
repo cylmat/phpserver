@@ -7,9 +7,9 @@ services:
     fpm: 
         build: 
             context: ./df/fpm
-            args:
-                servername: "my.url_website"
-                buildno: 1
+            #args:
+            #    servername: "my.url_website"
+            #    buildno: 1
             #target: FULL
         restart: always
         container_name: fpm
