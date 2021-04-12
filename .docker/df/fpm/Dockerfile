@@ -1,9 +1,9 @@
 ARG BUILD=FULL
 
 # From docker-compose
-ARG buildno
-ARG servername
-RUN echo "Build number: $buildno from $servername"
+#ARG buildno
+#ARG servername
+#RUN echo "Build number: $buildno from $servername"
 
 ###############
 # SMALL IMAGE #
