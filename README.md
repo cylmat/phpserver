@@ -43,5 +43,5 @@ Sample structure
      -> Server 1, 2, 3 ... <-
 
 #### Ref
-* [cylmat/phpconfig](https://github.com/cylmat/phpconfig/)
-* [cylmat/homeconfig](https://github.com/cylmat/homeconfig) 
+* [cylmat/homeconfig](https://github.com/cylmat/homeconfig) - Home configuration with custom prompts and editors
+* [cylmat/phpconfig](https://github.com/cylmat/phpconfig/) - PHP dev environment, specs and testing frameworks
