@@ -1,0 +1,62 @@
+name: PhpServer
+
+on:
+  push:
+    branches: [ main, dev ]
+
+jobs:
+  run-fpm:
+    name: Check fpm
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: cylmat/docker-action@v1
+
+    - name: Compose fpm
+      run: |
+        source .env && cd .docker
+        make compose-fpm
+        make container-ps
+    
+    - name: Check fpm
+      run: cd .docker && make check-fpm
+
+  run-srv:
+    name: Check servers
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: cylmat/docker-action@v1
+
+    - name: Compose srv
+      run: |
+        source .env && cd .docker
+        make compose-fpm
+        make compose-srv
+        make container-ps
+    
+    - name: Check srv
+      run: cd .docker && make check-srv
+
+  run-db:
+    name: Check databases
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: cylmat/docker-action@v1
+
+    - name: Compose db without sql
+      run: |
+        source .env && cd .docker
+        make compose-fpm
+        make compose-db
+        make container-ps
+    
+    - name: Check db
+      run: cd .docker && make check-db
+
+    - name: Check mq
+      run: cd .docker && make check-mq
