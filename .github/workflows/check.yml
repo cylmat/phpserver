@@ -2,7 +2,8 @@ name: PhpServer
 
 on:
   push:
-    branches: [ main, dev, action ]
+    branches:
+      - "*"
 
 jobs:
   run-fpm:
