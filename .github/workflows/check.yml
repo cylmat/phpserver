@@ -22,10 +22,6 @@ jobs:
         ref: 'main'
     - uses: cylmat/docker-action@v1
     
-    - name: git clone repo
-      # Avoid managing token & test cloning
-      run: git clone https://github.com/cylmat/phpserver/ . --depth=1
-
     - name: Compose fpm
       run: |
         source .env && cd .docker
@@ -41,12 +37,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: 'main'
     - uses: cylmat/docker-action@v1
     
-    - name: git clone repo
-      # Avoid managing token & test cloning
-      run: git clone https://github.com/cylmat/phpserver/ . --depth=1
-
     - name: Compose srv
       run: |
         ls -al .
