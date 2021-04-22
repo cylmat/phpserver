@@ -3,7 +3,7 @@ name: PhpServer
 # ###
 # Set workflow on separate branch to avoid include it in bootstrap directory 
 #
-# BUILD: 3
+# BUILD: 4
 #
 # ###
 
@@ -25,7 +25,6 @@ jobs:
 
     - name: Compose fpm
       run: |
-        ls -al .
         source .env && cd .docker
         make compose-fpm
         make container-ps
@@ -43,6 +42,7 @@ jobs:
 
     - name: Compose srv
       run: |
+        ls -al .
         source .env && cd .docker
         make compose-fpm
         make compose-srv
