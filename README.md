@@ -1,4 +1,4 @@
-[![PhpServer](https://github.com/cylmat/phpserver/actions/workflows/main.yml/badge.svg)](https://github.com/cylmat/phpserver/actions/workflows/main.yml)
+[![PhpServer](https://github.com/cylmat/phpserver/actions/workflows/check.yml/badge.svg)](https://github.com/cylmat/phpserver/actions/workflows/check.yml)
 
 PHP Boilerplate
 ===
