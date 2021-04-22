@@ -43,7 +43,6 @@ jobs:
     
     - name: Compose srv
       run: |
-        ls -al .
         source .env && cd .docker
         make compose-fpm
         make compose-srv
@@ -58,6 +57,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: 'main'
     - uses: cylmat/docker-action@v1
 
     - name: Compose db without sql
