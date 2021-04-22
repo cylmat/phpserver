@@ -9,7 +9,7 @@ name: PhpServer
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ action ]
 
 jobs:
   run-fpm:
