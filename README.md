@@ -12,7 +12,7 @@ Databases
 * [Mysql 5.7](https://www.mysql.com)
 * [PostgreSql 12.4](https://www.postgresql.org)
 * [Redis 6.0](https://redis.io)
-* [SQlite 3](https://www.sqlite.org)
+* [SQlite](https://www.sqlite.org)
 
 Messages
 --------
