@@ -4,16 +4,16 @@ SHELL := /bin/bash
 # Compose
 ###
 compose-db:
-	docker-compose -f docker-compose-db.yml --env ../.env up --build -d
+	docker-compose -f ../docker-compose-db.yml --env ../.env up --build -d
 
 compose-fpm:
-	docker-compose -f docker-compose-fpm.yml --env ../.env up --build -d
+	docker-compose -f ../docker-compose-fpm.yml --env ../.env up --build -d
 
 compose-proxy:
-	docker-compose -f docker-compose-proxy.yml --env ../.env up --build -d
+	docker-compose -f ../docker-compose-proxy.yml --env ../.env up --build -d
 
 compose-srv:
-	docker-compose -f docker-compose-srv.yml --env ../.env up --build -d
+	docker-compose -f ../docker-compose-srv.yml --env ../.env up --build -d
 
 ###
 # Check
