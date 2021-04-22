@@ -5,21 +5,8 @@ name: PhpServer
 # ###
 
 on:
-  workflow_dispatch:
-    inputs:
-      name:
-        description: 'Person to greet'
-        required: true
-        default: 'Mona the Octocat'
-      home:
-        description: 'location'
-        required: false
-        default: 'The Octoverse'
-  # push:
-  #   branches: [ main, dev ]
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '*/60 * * * *'
+  push:
+    branches: [ main, dev ]
 
 jobs:
   run-fpm:
@@ -28,6 +15,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        repository: ${{ github.repository }}
+        ref: 'main'
     - uses: cylmat/docker-action@v1
 
     - name: Compose fpm
