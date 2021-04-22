@@ -14,7 +14,7 @@ services:
         ports:
             - 8001:80
         networks: 
-            - phpenv
+            - phpsrv
 
     # SECOND SERVER TO TEST LOAD-BALANCING
     apache:
@@ -27,12 +27,12 @@ services:
             - ${DIRECTORY}/.docker/config/srv/apache/:/usr/local/apache2/conf/:ro
             - ${DIRECTORY}:/usr/local/apache2/htdocs/
         networks:
-            - phpenv
+            - phpsrv
           
 networks: 
-    phpenv:
+    phpsrv:
 
-###
+########
 # Boxes
 # https://devilbox.org
 # https://nanobox.io
@@ -43,3 +43,4 @@ networks:
 #
 # Lamp
 # https://hub.docker.com/r/mattrayner/lamp
+########

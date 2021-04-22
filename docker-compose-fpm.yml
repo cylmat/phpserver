@@ -6,7 +6,7 @@ services:
     ###########
     fpm: 
         build: 
-            context: ./df/fpm
+            context: ./.docker/fpm
             #args:
             #    servername: "my.url_website"
             #    buildno: 1
@@ -21,21 +21,18 @@ services:
         volumes:
             - ${DIRECTORY}:/var/www/
             # cli
-            - ${DIRECTORY}.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/cli/php.ini:ro
-            - ${DIRECTORY}.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/cli/conf.d/
+            - ${DIRECTORY}/.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/cli/php.ini:ro
+            - ${DIRECTORY}/.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/cli/conf.d/
             # fpm
-            - ${DIRECTORY}.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/fpm/php.ini:ro
-            - ${DIRECTORY}.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/fpm/conf.d/
-            
-            # sqlite
-            - ${DIRECTORY}.data/sqlite/:/sqlite/
+            - ${DIRECTORY}/.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/fpm/php.ini:ro
+            - ${DIRECTORY}/.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/fpm/conf.d/
         networks: 
-            - phpenv
+            - phpsrv
     
     # SECOND FPM TO USE LOAD-BALANCING
     fpm2: 
         build: 
-            context: ./df/fpm
+            context: ./.docker/fpm
             #target: FULL
         restart: always
         container_name: fpm2
@@ -47,16 +44,13 @@ services:
         volumes:
             - ${DIRECTORY}:/var/www/
             # cli
-            - ${DIRECTORY}.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/cli/php.ini:ro
-            - ${DIRECTORY}.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/cli/conf.d/
+            - ${DIRECTORY}/.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/cli/php.ini:ro
+            - ${DIRECTORY}/.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/cli/conf.d/
             # fpm
-            - ${DIRECTORY}.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/fpm/php.ini:ro
-            - ${DIRECTORY}.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/fpm/conf.d/
-            
-            # sqlite
-            - ${DIRECTORY}.data/sqlite/:/sqlite/
+            - ${DIRECTORY}/.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/fpm/php.ini:ro
+            - ${DIRECTORY}/.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/fpm/conf.d/
         networks: 
-            - phpenv
+            - phpsrv
 
 networks: 
-    phpenv:
+    phpsrv:

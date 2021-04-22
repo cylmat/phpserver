@@ -15,7 +15,7 @@ services:
             - mariadb:mariadb
             - mysql:mysql
         networks:
-            - phpenv
+            - phpsrv
 
     adminer:
         image: adminer:4.7-standalone
@@ -23,7 +23,7 @@ services:
         ports:
             - 8081:8080
         networks:
-            - phpenv
+            - phpsrv
 
     pgadmin:
         image: dpage/pgadmin4:4
@@ -36,26 +36,11 @@ services:
         ports: 
             - 8082:80
         networks:
-            - phpenv
+            - phpsrv
 
     #######
     # SQLITE admin: https://www.phpliteadmin.org
     #######
-
-    # mongo_express:
-    #     image: mongo-express
-    #     ports:
-    #         - 8090:8081
-    #     environment:
-    #         ME_CONFIG_MONGODB_ENABLE_ADMIN: true
-    #         ME_CONFIG_MONGODB_ADMINUSERNAME: root
-    #         ME_CONFIG_MONGODB_ADMINPASSWORD: root
-    #         ME_CONFIG_MONGODB_SERVER: mongodb
-    #         ME_CONFIG_MONGODB_AUTH_DATABASE : mongo
-    #         ME_CONFIG_MONGODB_AUTH_USERNAME : user
-    #         ME_CONFIG_MONGODB_AUTH_PASSWORD : p@ss
-    #     networks:
-    #         - phpenv
 
     phpredisadmin:
         image: erikdubbelboer/phpredisadmin:v1.13
@@ -66,7 +51,7 @@ services:
         ports: 
             - 8083:80
         networks:
-            - phpenv
+            - phpsrv
 
     memcachedadmin:
         image: jacksoncage/phpmemcachedadmin
@@ -74,7 +59,7 @@ services:
         ports:
             - 8084:80
         networks:
-            - phpenv
+            - phpsrv
 
 networks: 
-    phpenv:
+    phpsrv:

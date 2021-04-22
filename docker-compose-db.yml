@@ -17,11 +17,11 @@ services:
         #command: "--innodb_use_native_aio=0"
         volumes:
            - ${DIRECTORY}/.docker/config/db/mysql:/etc/mysql:ro
-           - ${DIRECTORY}/.data/mysql:/var/lib/mysql
+           - mysql:/var/lib/mysql
         ports:
             - 3306:3306
         networks: 
-            - phpenv
+            - phpsrv
             
     maria:
         image: mariadb:10.0
@@ -38,9 +38,9 @@ services:
         #command: "--innodb_use_native_aio=0"
         volumes:
             - ${DIRECTORY}/.docker/config/db/maria:/etc/mysql:ro
-            - ${DIRECTORY}/.data/maria/:/var/lib/mysql
+            - maria:/var/lib/mysql
         networks:
-            - phpenv
+            - phpsrv
 
     postgres:
         image: postgres:12.4
@@ -54,23 +54,7 @@ services:
         volumes:
             - pgdata:/var/lib/postgresql/data
         networks:
-            - phpenv
-
-    # mongodb:
-    #     image: mongo:3.0.15
-    #     labels:
-    #         - "traefik.enable=false"
-    #     environment:
-    #         MONGO_INITDB_ROOT_USERNAME: 'root'
-    #         MONGO_INITDB_ROOT_PASSWORD: 'root'
-    #         MONGO_INITDB_DATABASE : 'mongo'
-    #     volumes:
-    #         - ./mongo/data/db:/data/db
-    #         - ./mongo/mongod.conf:/etc/mongod.conf
-    #         - ./mongo/files/init.js:/docker-entrypoint-initdb.d/init.js:ro
-    #     command: [--config /etc/mongod.conf]
-    #     networks:
-    #         - phpenv
+            - phpsrv
 
     redis:
         image: redis:6.0  
@@ -81,7 +65,7 @@ services:
             - ${DIRECTORY}/.docker/config/db/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
             - ${DIRECTORY}/.data/redis/:/data/
         networks:
-            - phpenv
+            - phpsrv
     
     memcached:
         image: memcached:1.6
@@ -89,7 +73,7 @@ services:
         ports:
             - 11211:11211
         networks:
-            - phpenv
+            - phpsrv
 
     #############
     # Messenger #
@@ -105,10 +89,10 @@ services:
             - 56720:8080
             - 15672:15672
         networks: 
-            - phpenv
+            - phpsrv
 
 networks: 
-    phpenv:
+    phpsrv:
 
 volumes:
     mysql:

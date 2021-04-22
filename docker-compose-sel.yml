@@ -10,7 +10,7 @@ services:
         volumes:
             - ${DIRECTORY}:/appli
         networks: 
-            - phpenv
+            - phpsrv
 
 networks: 
-    phpenv:
+    phpsrv:
