@@ -9,7 +9,7 @@ services:
             - ${DIRECTORY}/.docker/config/srv/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
             - ${DIRECTORY}/.docker/config/srv/nginx/conf.d/:/etc/nginx/conf.d/:ro
             - ${DIRECTORY}/.docker/config/srv/nginx/snippets:/etc/nginx/snippets:ro
-            - ${DIRECTORY}/public:/app-static
+            - ${DIRECTORY}/public:/var/www/public
             - /nginx/data/cache # create directory to use with nginx.conf
         ports:
             - 8001:80
