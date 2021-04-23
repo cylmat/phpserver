@@ -16,7 +16,7 @@ services:
         networks: 
             - phpsrv
 
-    # SECOND SERVER TO TEST LOAD-BALANCING
+    # SECOND SERVER TO USE DOUBLE ENDPOINT
     apache:
         image: httpd:2.4
         container_name: apache

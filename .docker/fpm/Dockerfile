@@ -27,11 +27,11 @@ RUN apt-get install -y sqlite3 php7.4-sqlite
 # Amqp
 RUN apt-get install -y php7.4-amqp libczmq4 php7.4-zmq
 
-##############
-# FULL IMAGE #
-##############
+############
+# DB IMAGE #
+############
 
-FROM SMALL AS FULL
+FROM SMALL AS DB
 
 # Common
 RUN apt-get install -y build-essential busybox software-properties-common
@@ -50,6 +50,12 @@ RUN echo 'yes' | pecl install redis-5.3.1
 
 # DBA Berkeley abstraction
 RUN apt-get install -y php7.4-dba
+
+##############
+# FULL IMAGE #
+##############
+
+FROM DB AS FULL
 
 ##############
 # Useful EXT #
