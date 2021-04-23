@@ -1,5 +1,3 @@
-ARG BUILD=FULL
-
 # From docker-compose
 #ARG buildno
 #ARG servername
