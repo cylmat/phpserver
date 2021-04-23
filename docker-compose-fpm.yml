@@ -26,8 +26,6 @@ services:
             # fpm
             - ${DIRECTORY}/.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/fpm/php.ini:ro
             - ${DIRECTORY}/.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/fpm/conf.d/
-            # sqlite
-            - /sqlite
         networks: 
             - phpsrv
     
@@ -51,8 +49,6 @@ services:
             # fpm
             - ${DIRECTORY}/.docker/config/srv/phpfpm/php.ini:/etc/php/7.4/fpm/php.ini:ro
             - ${DIRECTORY}/.docker/config/srv/phpfpm/mods-available/:/etc/php/7.4/fpm/conf.d/
-            # sqlite
-            - /sqlite
         networks: 
             - phpsrv
 

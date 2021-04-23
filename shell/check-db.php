@@ -4,7 +4,7 @@ $TOTAL = 4;
 
 // SQL
 if (defined('SQL')) {
-    $TOTAL += 4;
+    $TOTAL += 3;
 
     Check::pdo('maria', 'mysql:host=maria;port=3306;dbname=madb');
     Check::pdo('mysql', 'mysql:host=mysql;port=3306;dbname=mydb');
@@ -15,7 +15,7 @@ if (defined('SQL')) {
 }
 
 // PDO
-Check::pdo('sqlit', 'sqlite:/sqlite/sqlite.db3');
+Check::pdo('sqlit', 'sqlite:sqlite.db3');
 
 // Key-value
 Check::dba("/tmp/test.db4");

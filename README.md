@@ -1,6 +1,6 @@
 [![PhpServer](https://github.com/cylmat/phpserver/actions/workflows/check.yml/badge.svg)](https://github.com/cylmat/phpserver/actions/workflows/check.yml)
 
-PHP Boilerplate
+PHP Server Boilerplate
 ===
 Functional installation of Php environment on [Docker](https://www.docker.com)
 
