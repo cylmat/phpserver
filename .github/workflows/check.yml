@@ -44,7 +44,7 @@ jobs:
     - name: Compose srv
       run: |
         source .env && cd .docker
-        make compose-fpm-small
+        make compose-fpm
         make compose-srv
         make container-ps
     
