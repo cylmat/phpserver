@@ -1,6 +1,7 @@
 <?php
 
-/*
+/**
+ * @see
  * http://book.varnish-software.com/4.0/chapters/HTTP.html
  * https://github.com/varnish/Varnish-Book/blob/master/material/webdev/httpheadersexample.php
  * 
