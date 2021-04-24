@@ -1,34 +1,5 @@
 <?php
 
-$TOTAL = 4;
-
-// SQL
-if (defined('SQL')) {
-    $TOTAL += 3;
-
-    Check::pdo('maria', 'mysql:host=maria;port=3306;dbname=madb');
-    Check::pdo('mysql', 'mysql:host=mysql;port=3306;dbname=mydb');
-    Check::pdo('postg', 'pgsql:host=postgres;port=5432;dbname=pgdb');
-
-    // Php ext for MySql Odbc
-    // Check::odbc("DRIVER={MySQL ODBC 8.0 Unicode Driver};Server=mysql;Database=mydb;Port=3306;String Types=Unicode");
-}
-
-// PDO
-Check::pdo('sqlit', 'sqlite:sqlite.db3');
-
-// Key-value
-Check::dba("/tmp/test.db4");
-Check::redis();
-Check::mem();
-
-if ($TOTAL === $a = Check::getCount()) {
-    echo "count: $a/$TOTAL [OK]\n";
-} else {
-    echo "count: $a/$TOTAL [failed]\n";
-    exit(1);
-}
-
 /**
  * Check data connections
  */
@@ -36,9 +7,24 @@ class Check
 {
     static private $count = 0;
 
-    static function getCount()
+    static function getCount(): int
     {
         return self::$count;
+    }
+
+    static function reset(): void
+    {
+        self::$count = 0;
+    }
+    
+    static function total(int $total, string $type)
+    {
+        if ($total === self::getCount()) {
+            echo "$type count: ".self::getCount()."/$total [OK]\n";
+        } else {
+            echo "$type count: ".self::getCount()."/$total [failed]\n";
+            exit(1);
+        }
     }
 
     static function pdo(string $type, string $dsn)
@@ -114,7 +100,8 @@ class Check
     /**
      * Uncomment to test Odbc
      */
-    /*static function odbc(string $dsn)
+    /*
+    static function odbc(string $dsn)
     {
         $table = "odbc";
 
@@ -136,5 +123,6 @@ class Check
             echo ' ODBC:fail query ' . PHP_EOL;
         }
         odbc_close($connection);
-    }*/
+    }
+    */
 }

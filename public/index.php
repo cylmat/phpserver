@@ -1,5 +1,7 @@
 <?php
 
+
+$dbkv = gets('dbkv');
 $dbsql = gets('dbsql');
 [$php_css, $php_env] = variables();
 
@@ -10,6 +12,7 @@ echo <<<TEMPLATE
     $php_css
     <style type="text/css">
         .g {color:green}
+        .r {color:red}
     </style>
 </head>
 <body>
@@ -18,6 +21,7 @@ echo <<<TEMPLATE
     <h2>Servers</h2>
     <a href="">{$_SERVER['SERVER_SOFTWARE']}</a> [<span class="g">OK</span>]
     <h2>Databases</h2>
+    $dbkv<br/>
     $dbsql
     <h2>PhpInfo</h2>
     $php_env
@@ -30,7 +34,9 @@ function gets(string $type): string {
     if (file_exists($file)) {
         ob_start();
         include_once $file;
-        return nl2br(ob_get_clean());
+        $res = nl2br(ob_get_clean());
+        $res = preg_replace('/ok|OK/', '<span class="g">OK</span>', $res);
+        return $res;
     }
     return '';
 }

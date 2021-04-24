@@ -25,7 +25,7 @@ check-db:
 	docker exec fpm bash -c "php -f '/var/www/shell/check-db.php'"
 
 check-fpm:
-	docker exec fpm bash -c "php -f '/var/www/shell/check-fpm.php'"
+	docker exec fpm bash -c "php -v && php-fpm7.4 -v"
 
 check-mq:
 	docker exec -e SERVER=1 fpm bash -c "php -f '/var/www/shell/check-mq.php' &"
