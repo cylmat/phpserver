@@ -130,4 +130,16 @@ class Check
         odbc_close($connection);
     }
     */
+
+    static function curl(string $url, int $port)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "http://$url:$port/");
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+        curl_exec($ch);
+        $err = curl_error($ch);
+        curl_close($ch);
+        echo($err);
+    }
 }
