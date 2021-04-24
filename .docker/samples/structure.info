@@ -1,0 +1,11 @@
+Server structure sample
+
+               USER
+                |
+            Virtual IP
+                |
+     HAProxy1   -   HAProxy2 
+    |     |           |      |
+    |  Varnish1 - Varnish2   |
+    |     |           |      |
+     -> Server 1, 2, 3 ... <-
