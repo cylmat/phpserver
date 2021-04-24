@@ -20,10 +20,12 @@ class Check
     static function total(int $total, string $type)
     {
         if ($total === self::getCount()) {
-            echo "$type count: ".self::getCount()."/$total [OK]\n";
+            echo "$type count: ".self::getCount()."/$total [ok]\n";
         } else {
             echo "$type count: ".self::getCount()."/$total [failed]\n";
-            exit(1);
+            if (PHP_SAPI === 'cli') {
+                exit(1);
+            }
         }
     }
 
@@ -42,11 +44,10 @@ class Check
                 echo $type . ':' . $res['my'] . PHP_EOL;
                 self::$count++;
             } else {
-                var_dump($r->errorInfo()[2]);
-                throw new PDOException("Query $type empty");
+                throw new PDOException("Query $type empty Error:".$r->errorInfo()[2]);
             }
         } catch (PDOException $e) {
-            echo " $type:" . $e->getMessage() . PHP_EOL;
+            echo " $type:failed **" . $e->getMessage() . '**' . PHP_EOL;
         }
     }
 
@@ -58,7 +59,7 @@ class Check
         // dba_handlers() => cdb, cdb_make, db4, inifile, flatfile, qdbm, lmdb
         $dba = dba_open($file, "n", "db4"); //n: rwc
         if (!$dba) {
-            echo " dba_open failed \n";
+            echo "DBA:-Open- method failed\n";
         }
         dba_replace("key", "dba:ok" . PHP_EOL, $dba);
         if (dba_exists("key", $dba)) {
@@ -66,7 +67,7 @@ class Check
             dba_delete("key", $dba);
             self::$count++;
         } else {
-            echo " DBA:failed \n";
+            echo "DBA:-Fetching key- failed\n";
         }
         dba_close($dba);
     }
@@ -76,11 +77,11 @@ class Check
         try {
             $redis = new \Redis;
             $redis->connect('redis', 6379);
-            $redis->set("key", "redis:ok");
+            $redis->set("key", "redis:ok", 5);
             echo $redis->get("key") . PHP_EOL;
             self::$count++;
         } catch (\Exception $e) {
-            echo $e->getMessage() . PHP_EOL;
+            echo 'redis:failed ' . $e->getMessage() . PHP_EOL;
         }
     }
 
@@ -89,11 +90,15 @@ class Check
         try {
             $mc = new \Memcached;
             $mc->addServer("memcached", 11211);
-            $mc->set("test", "memcached:ok");
-            echo $mc->get("test") . PHP_EOL;
+            $mc->set("test", "memcached:ok", 5);
+            $res = $mc->get("test");
+            if ($mc->getResultCode() !== 0) {
+                throw new Exception("Error when trying to set result");
+            }
+            echo $res.PHP_EOL;
             self::$count++;
         } catch (\Exception $e) {
-            echo $e->getMessage() . PHP_EOL;
+            echo 'memcached:failed '.$e->getMessage() . PHP_EOL;
         }
     }
 

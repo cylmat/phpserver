@@ -18,11 +18,12 @@ compose-srv:
 ###
 # Check
 ###
+# don't connect on github actions
 check-dbsql:
 	docker exec fpm bash -c "php -f '/var/www/shell/check-dbsql.php'"
 
-check-db:
-	docker exec fpm bash -c "php -f '/var/www/shell/check-db.php'"
+check-dbkv:
+	docker exec fpm bash -c "php -f '/var/www/shell/check-dbkv.php'"
 
 check-fpm:
 	docker exec fpm bash -c "php -v && php-fpm7.4 -v"
