@@ -13,7 +13,7 @@ Simply clone the repository and run it as a boilerplate for your project.
 git clone https://github.com/cylmat/phpserver my_app --depth=1
 ```
 
-Version of installation used:
+Versions of servers:
 ---
 **Servers**  
 * [Apache 2.4](https://httpd.apache.org)
