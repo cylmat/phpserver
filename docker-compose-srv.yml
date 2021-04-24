@@ -1,6 +1,20 @@
 version: '3'
 
 services: 
+    # Choose one server or both
+    apache:
+        image: httpd:2.4
+        container_name: apache
+        restart: always
+        ports: 
+            - 8001:80
+        volumes:
+            - ${DIRECTORY}/.docker/config/srv/apache/:/usr/local/apache2/conf/:ro
+            - ${DIRECTORY}:/usr/local/apache2/htdocs/
+        networks:
+            - phpsrv
+
+    # Second server to use double endpoint or Api
     nginx:
         image: nginx:1.17
         container_name: nginx
@@ -12,21 +26,8 @@ services:
             - ${DIRECTORY}/public:/var/www/public
             - /nginx/data/cache # create directory to use with nginx.conf
         ports:
-            - 8001:80
-        networks: 
-            - phpsrv
-
-    # SECOND SERVER TO USE DOUBLE ENDPOINT
-    apache:
-        image: httpd:2.4
-        container_name: apache
-        restart: always
-        ports: 
             - 8002:80
-        volumes:
-            - ${DIRECTORY}/.docker/config/srv/apache/:/usr/local/apache2/conf/:ro
-            - ${DIRECTORY}:/usr/local/apache2/htdocs/
-        networks:
+        networks: 
             - phpsrv
           
 networks: 

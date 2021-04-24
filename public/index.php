@@ -6,6 +6,12 @@ error_reporting(-1);
 /**
  * Variables
  */
+$apache = preg_match('/apache/', strtolower($_SERVER['SERVER_SOFTWARE'])) ? $_SERVER['SERVER_SOFTWARE'] : 'Apache';
+$nginx = preg_match('/nginx/', strtolower($_SERVER['SERVER_SOFTWARE'])) ? ucfirst($_SERVER['SERVER_SOFTWARE']) : 'Nginx';
+$ok_a = $apache == 'Apache' ? '[<span class="g">OK</span>]' : '';
+$ok_n = $nginx == 'Nginx' ?  '[<span class="g">OK</span>]' : '';
+$host = parse_url($_SERVER['HTTP_HOST'])['host'];
+
 $dbkv = gets('dbkv');
 $dbsql = gets('dbsql');
 $mq = '';
@@ -32,7 +38,8 @@ echo <<<TEMPLATE
     Host <em class="b">{$_SERVER['HTTP_HOST']}</em> functionnal on address <em class="b">{$_SERVER['SERVER_ADDR']}</em><br/>
     Fpm server n°<em class="b">{$_SERVER['HOSTNAME']}</em>
     <h2>Servers</h2>
-    <a href="">{$_SERVER['SERVER_SOFTWARE']}</a> [<span class="g">OK</span>]
+    <a href="http://$host:8001/">$apache</a> $ok_n<br/>
+    <a href="http://$host:8002/">$nginx</a> $ok_a
     <h2>Databases</h2>
     $dbkv<br/>
     $dbsql
