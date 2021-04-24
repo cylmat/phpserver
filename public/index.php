@@ -38,11 +38,6 @@ echo <<<TEMPLATE
     $dbsql
     <h2>Messages</h2>
     $mq
-    <h2>Proxy</h2>
-    <a href="/haproxycheck">HAProxy check</a>
-    <a href="/docker-haproxy?stats">HAProxy Stats</a>
-    <a href=""$cscheme://$chost:51510/stats"">HAProxy Stats51510</a>
-    
 
     $php_env
     </center>
