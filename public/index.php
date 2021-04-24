@@ -3,11 +3,18 @@
 ini_set('display_errors','on');
 error_reporting(-1);
 
+/**
+ * Variables
+ */
 $dbkv = gets('dbkv');
 $dbsql = gets('dbsql');
 $mq = '';
 [$php_css, $php_env] = variables();
 
+
+/**
+ * Template
+ */
 echo <<<TEMPLATE
 <!doctype html>
 <html>
@@ -31,6 +38,12 @@ echo <<<TEMPLATE
     $dbsql
     <h2>Messages</h2>
     $mq
+    <h2>Proxy</h2>
+    <a href="/haproxycheck">HAProxy check</a>
+    <a href="/docker-haproxy?stats">HAProxy Stats</a>
+    <a href=""$cscheme://$chost:51510/stats"">HAProxy Stats51510</a>
+    
+
     $php_env
     </center>
 </body>
@@ -60,3 +73,14 @@ function variables(): array {
     $php_env = str_replace("\r", "\n", $php_env[0]);
     return [$php_css, $php_env];
 }
+
+/*
+NGINX
+'Deny access' => "/disable/myfile.php",
+'Php files' => '/httpheaders.php'
+
+HAPROXY
+'Check' => '/haproxycheck',
+'Stats' => "/docker-haproxy?stats",
+'Stats51' => "$cscheme://$chost:51510/stats"
+ */
