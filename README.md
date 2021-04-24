@@ -41,6 +41,6 @@ License
 ---
 PHPServer is licensed under [MIT License](https://github.com/cylmat/phpserver/blob/main/LICENSE).
 
-### See also
+## See also
 * [cylmat/homeconfig](https://github.com/cylmat/homeconfig) - Home configuration with custom prompts and editors
 * [cylmat/phpconfig](https://github.com/cylmat/phpconfig/) - PHP dev environment, specs and testing frameworks
