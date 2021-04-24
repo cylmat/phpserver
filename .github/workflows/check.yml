@@ -65,11 +65,11 @@ jobs:
       run: |
         source .env && cd .docker
         make compose-fpm
-        make compose-dbkv
+        make compose-db
         make container-ps
     
     - name: Check db
-      run: cd .docker && make check-db
+      run: cd .docker && make check-dbkv
 
     - name: Check mq
       run: cd .docker && make check-mq
