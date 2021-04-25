@@ -5,7 +5,6 @@ PHP Server Boilerplate
 ===
 Functional installation of Php environment using [Docker](https://www.docker.com).  
 
-
 Usage
 -----
 Simply clone the repository and run it as a boilerplate for your project.
