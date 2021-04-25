@@ -43,7 +43,7 @@ Versions of servers:
 
 License
 ---
-PHPServer is licensed under [MIT License](https://github.com/cylmat/phpserver/blob/main/LICENSE).
+PHPServer is licensed under MIT License.
 
 MIT License
 
