@@ -37,10 +37,32 @@ Versions of servers:
 * [HAProxy 2.2](http://www.haproxy.org)
 * [Varnish 6.0](https://varnish-cache.org)
 
+## See also
+* [cylmat/homeconfig](https://github.com/cylmat/homeconfig) - Home configuration with custom prompts and editors
+* [cylmat/phpconfig](https://github.com/cylmat/phpconfig/) - PHP dev environment, specs and testing frameworks
+
 License
 ---
 PHPServer is licensed under [MIT License](https://github.com/cylmat/phpserver/blob/main/LICENSE).
 
-## See also
-* [cylmat/homeconfig](https://github.com/cylmat/homeconfig) - Home configuration with custom prompts and editors
-* [cylmat/phpconfig](https://github.com/cylmat/phpconfig/) - PHP dev environment, specs and testing frameworks
+MIT License
+
+Copyright (c) 2020-2021 Bash-it
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
