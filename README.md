@@ -37,8 +37,8 @@ Versions of servers:
 * [Varnish 6.0](https://varnish-cache.org)
 
 ## See also
-* [cylmat/homeconfig](https://github.com/cylmat/homeconfig) - Home configuration with custom prompts and editors
-* [cylmat/phpconfig](https://github.com/cylmat/phpconfig/) - PHP dev environment, specs and testing frameworks
+* [cylmat/homeconfig](https://github.com/cylmat/homeconfig) - Home configuration with custom prompts and editors.
+* [cylmat/phpconfig](https://github.com/cylmat/phpconfig/) - PHP dev environment, specs and testing frameworks.
 
 License
 ---
