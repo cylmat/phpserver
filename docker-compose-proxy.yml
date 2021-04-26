@@ -5,7 +5,7 @@ services:
     # PROXY - CACHE #
     #################
     haproxy:
-        image: haproxy:2.2
+        image: haproxy:latst #2.2
         restart: always
         ports:
             - 8010:80
@@ -16,7 +16,7 @@ services:
             - phpsrv
 
     varnish: 
-        image: varnish:6.0
+        image: varnish:latest #6.0
         restart: always
         ports:
             - 8011:80

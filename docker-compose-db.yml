@@ -5,7 +5,7 @@ services:
     # DATABASES
     #############
     mysql:
-        image: mysql:5.7
+        image: mysql:latest #5.7
         container_name: mysql
         restart: always
         environment:
@@ -24,7 +24,7 @@ services:
             - phpsrv
             
     maria:
-        image: mariadb:10.0
+        image: mariadb:latest #10.0
         container_name: maria
         restart: always
         environment:
@@ -43,7 +43,7 @@ services:
             - phpsrv
 
     postgres:
-        image: postgres:12.4
+        image: postgres:latest #12.4
         restart: always
         environment:
             POSTGRES_USER: user
@@ -57,7 +57,7 @@ services:
             - phpsrv
 
     redis:
-        image: redis:6.0  
+        image: redis:latest #6.0  
         restart: always
         ports:
             - 6379:6379
@@ -68,7 +68,7 @@ services:
             - phpsrv
     
     memcached:
-        image: memcached:1.6
+        image: memcached:latest #1.6
         restart: always
         ports:
             - 11211:11211
@@ -79,7 +79,7 @@ services:
     # Messenger #
     #############
     rabbitmq:
-        image: rabbitmq:3.8
+        image: rabbitmq:latest #3.8
         hostname: rabbitmq
         environment:
             RABBITMQ_DEFAULT_USER: user

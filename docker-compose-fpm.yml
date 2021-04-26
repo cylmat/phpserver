@@ -6,7 +6,7 @@ services:
     ###########
     fpm: 
         build: 
-            context: ./.docker/fpm
+            context: ./.docker/fpm #7.4
             #args:
             #    servername: "my.url_website"
             #    buildno: 1
@@ -32,7 +32,7 @@ services:
     # SECOND FPM TO USE LOAD-BALANCING
     fpm2: 
         build: 
-            context: ./.docker/fpm
+            context: ./.docker/fpm #7.4
             target: FULL
         restart: always
         container_name: fpm2

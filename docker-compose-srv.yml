@@ -3,7 +3,7 @@ version: '3'
 services: 
     # Choose one server or both
     apache:
-        image: httpd:2.4
+        image: httpd:latest #2.4
         container_name: apache
         restart: always
         ports: 
@@ -16,7 +16,7 @@ services:
 
     # Second server to use double endpoint or Api
     nginx:
-        image: nginx:1.17
+        image: nginx:latest #1.17
         container_name: nginx
         restart: always
         volumes:
