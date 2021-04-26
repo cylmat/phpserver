@@ -9,7 +9,8 @@ Usage
 -----
 Simply clone the repository and run it as a boilerplate for your project.
 ```
-git clone https://github.com/cylmat/phpserver my_app --depth=1
+git clone --depth=1 https://github.com/cylmat/phpserver my_app
+rm ./my_app/.git -rf 
 ```
 
 Versions of servers:
